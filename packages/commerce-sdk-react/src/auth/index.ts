@@ -377,9 +377,12 @@ class Auth {
 
     /**
      * Gets the Do-Not-Track (DNT) preference from the `dw_dnt` cookie.
-     * If user has set their DNT preference, read the cookie, if not, use the default DNT pref. If the default DNT pref has not been set, default to false.
+     * If user has set their DNT preference, read the cookie, if not, use the default DNT pref. If the default DNT pref has not been set, default to undefined.
      */
-    private getDntPreference(dw_dnt: string | undefined, defaultDnt: boolean | undefined) {
+    public getDntPreference() {
+        const dw_dnt = this.get(DNT_COOKIE_NAME)
+        const defaultDnt = this.defaultDnt
+
         let dntPref
         // Read `dw_dnt` cookie
         const dntCookie = dw_dnt === '1' ? true : dw_dnt === '0' ? false : undefined
@@ -508,7 +511,7 @@ class Auth {
     }
 
     async refreshAccessToken() {
-        const dntPref = this.getDntPreference(this.get(DNT_COOKIE_NAME), this.defaultDnt)
+        const dntPref = this.getDntPreference()
         const refreshTokenRegistered = this.get('refresh_token_registered')
         const refreshTokenGuest = this.get('refresh_token_guest')
         const refreshToken = refreshTokenRegistered || refreshTokenGuest
@@ -661,7 +664,7 @@ class Auth {
             this.logWarning(SLAS_SECRET_WARNING_MSG)
         }
         const usid = this.get('usid')
-        const dntPref = this.getDntPreference(this.get(DNT_COOKIE_NAME), this.defaultDnt)
+        const dntPref = this.getDntPreference()
         const isGuest = true
         const guestPrivateArgs = [
             this.client,
@@ -736,7 +739,7 @@ class Auth {
         }
         const redirectURI = this.redirectURI
         const usid = this.get('usid')
-        const dntPref = this.getDntPreference(this.get(DNT_COOKIE_NAME), this.defaultDnt)
+        const dntPref = this.getDntPreference()
         const isGuest = false
         const token = await helpers.loginRegisteredUserB2C(
             this.client,

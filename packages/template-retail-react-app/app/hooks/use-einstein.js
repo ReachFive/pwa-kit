@@ -11,13 +11,15 @@ import {
     useAccessToken,
     useUsid,
     useEncUserId,
-    useCustomerType
+    useCustomerType,
+    useDNT
 } from '@salesforce/commerce-sdk-react'
 import {keysToCamel} from '@salesforce/retail-react-app/app/utils/utils'
 import logger from '@salesforce/retail-react-app/app/utils/logger-instance'
 
 export class EinsteinAPI {
-    constructor({host, einsteinId, siteId, isProduction}) {
+    constructor({host, einsteinId, siteId, isProduction, dntPreference}) {
+        this.dntPreference = dntPreference
         this.siteId = siteId
         this.isProduction = isProduction
         this.host = host
@@ -120,13 +122,14 @@ export class EinsteinAPI {
 
         let response
         try {
-            response = await fetch(`${this.host}/v3${endpoint}`, {
-                method: method,
-                headers: headers,
-                ...(body && {
-                    body: JSON.stringify(body)
+            if (this.dntPreference === false)
+                response = await fetch(`${this.host}/v3${endpoint}`, {
+                    method: method,
+                    headers: headers,
+                    ...(body && {
+                        body: JSON.stringify(body)
+                    })
                 })
-            })
         } catch (error) {
             logger.error('Einstein request failed', {
                 namespace: 'useEinstein.einsteinFetch',
@@ -388,6 +391,7 @@ export class EinsteinAPI {
 
 const useEinstein = () => {
     const api = useCommerceApi()
+    const {dntPreference} = useDNT()
     const {getTokenWhenReady} = useAccessToken()
     const {
         app: {einsteinAPI: config}
@@ -404,7 +408,8 @@ const useEinstein = () => {
                 host,
                 einsteinId,
                 siteId,
-                isProduction
+                isProduction,
+                dntPreference
             }),
         [host, einsteinId, siteId, isProduction]
     )

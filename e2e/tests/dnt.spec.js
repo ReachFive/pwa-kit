@@ -63,9 +63,18 @@ test("Shopper can use the consent tracking form", async ({ page }) => {
   await expect(declineButton).toBeVisible();
   await declineButton.click();
   
+  // Intercept einstein request
+  let apiCallsMade = false;
+  await page.route('https://api.cquotient.com/v3/activities/aaij-MobileFirst/viewCategory', (route) => {
+    apiCallsMade = true;
+    route.continue();
+  });
+  
   // The value of 1 comes from defaultDnt prop in _app-config/index.jsx
   checkDntCookie(page, '1')
 
+  // Trigger einstein events
+  await page.click('text=Womens');
   // Reloading the page after setting DNT makes the form not appear again
   await page.reload()
   await expect(page.getByText(/Tracking Consent/i)).toBeHidden();
@@ -88,4 +97,5 @@ test("Shopper can use the consent tracking form", async ({ page }) => {
   }
   await page.reload();
   await expect(page.getByText(/Tracking Consent/i)).toBeVisible({timeout: 10000});
+  expect(apiCallsMade).toBe(false);
 });
