@@ -7,8 +7,8 @@
 import useAuthContext from './useAuthContext'
 
 interface useDntReturn {
-    dntStatus: boolean | undefined,
-    dntPreference: boolean | undefined,
+    dntStatus: boolean | undefined
+    dntPreference: boolean | undefined
     updateDNT: (preference: boolean | null) => Promise<void>
 }
 
