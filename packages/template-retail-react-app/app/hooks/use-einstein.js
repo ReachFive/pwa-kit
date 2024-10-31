@@ -122,7 +122,7 @@ export class EinsteinAPI {
 
         let response
         try {
-            if (this.dntPreference === false)
+            if (this.dntPreference === false || this.dntPreference === undefined)
                 response = await fetch(`${this.host}/v3${endpoint}`, {
                     method: method,
                     headers: headers,
