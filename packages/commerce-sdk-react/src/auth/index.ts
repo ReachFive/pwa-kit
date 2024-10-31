@@ -377,7 +377,7 @@ class Auth {
 
     /**
      * Gets the Do-Not-Track (DNT) preference from the `dw_dnt` cookie.
-     * If user has set their DNT preference, read the cookie, if not, use the default DNT pref. If the default DNT pref has not been set, default to undefined.
+     * If user has set their DNT preference, read the cookie, if not, use the default DNT pref. If the default DNT pref has not been set, default to false.
      */
     public getDntPreference() {
         const dw_dnt = this.get(DNT_COOKIE_NAME)
@@ -389,7 +389,7 @@ class Auth {
         dntPref = dntCookie
 
         // If the cookie is not set, read the default DNT preference.
-        if (dntCookie === undefined) dntPref = defaultDnt !== undefined ? defaultDnt : undefined
+        if (dntCookie === undefined) dntPref = defaultDnt !== undefined ? defaultDnt : false
 
         return dntPref
     }
@@ -523,7 +523,7 @@ class Auth {
                             this.client,
                             {
                                 refreshToken,
-                                ...(dntPref !== undefined && {dnt: dntPref})
+                                dnt: dntPref
                             },
                             {
                                 clientSecret: this.clientSecret
@@ -669,7 +669,7 @@ class Auth {
         const guestPrivateArgs = [
             this.client,
             {
-                ...(dntPref !== undefined && {dnt: dntPref}),
+                dnt: dntPref,
                 ...(usid && {usid})
             },
             {clientSecret: this.clientSecret}
@@ -678,7 +678,7 @@ class Auth {
             this.client,
             {
                 redirectURI: this.redirectURI,
-                ...(dntPref !== undefined && {dnt: dntPref}),
+                dnt: dntPref,
                 ...(usid && {usid})
             }
         ] as const
@@ -749,7 +749,7 @@ class Auth {
             },
             {
                 redirectURI,
-                ...(dntPref !== undefined && {dnt: dntPref}),
+                dnt: dntPref,
                 ...(usid && {usid})
             }
         )
