@@ -14,6 +14,7 @@ const mockedUseAuthContext = useAuthContext as jest.MockedFunction<typeof Object
 const mockedUseConfig = useConfig as jest.MockedFunction<typeof Object>
 const mockSetDnt = jest.fn()
 const mockGetDnt = jest.fn()
+const mockGetDntPreference = jest.fn()
 
 describe('useDNT tests', () => {
     beforeEach(() => {
@@ -31,6 +32,7 @@ describe('useDNT tests', () => {
             },
             getDnt: mockGetDnt,
             setDnt: mockSetDnt,
+            getDntPreference: mockGetDntPreference,
             parseSlasJWT: () => {
                 return {dnt: '1'}
             }

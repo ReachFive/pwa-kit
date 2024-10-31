@@ -58,7 +58,7 @@ beforeEach(() => {
                     id_token: 'testIdToken'
                 })
             )
-        ),
+        )
     )
 
     // Since we're testing some navigation logic, we are using a simple Router
