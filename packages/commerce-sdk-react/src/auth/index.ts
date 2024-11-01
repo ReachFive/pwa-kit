@@ -388,9 +388,8 @@ class Auth {
         const dntCookie = dw_dnt === '1' ? true : dw_dnt === '0' ? false : undefined
         if (dntCookie !== undefined) {
             dntPref = dntCookie
-        }
-        else {
-            // If the cookie is not set, read the defaultDnt preference. 
+        } else {
+            // If the cookie is not set, read the defaultDnt preference.
             // If defaultDnt doesn't exist, default to false, following SLAS default for dnt
             dntPref = defaultDnt !== undefined ? defaultDnt : false
         }

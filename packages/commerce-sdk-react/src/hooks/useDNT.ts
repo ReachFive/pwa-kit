@@ -16,7 +16,7 @@ interface useDntReturn {
  * Hook that returns
  * dntStatus - a boolean indicating the DNT user choice status. Used to determine
  *              if the consent tracking form should be rendered
- * dntPreference - a boolean indicating the current DNT preference to apply to 
+ * dntPreference - a boolean indicating the current DNT preference to apply to
  *              analytics layers. Takes defaultDnt into account when dntStatus is undefined.
  * updateDNT - a function that takes a DNT choice and creates the dw_dnt
  *              cookie and reauthorizes with SLAS
