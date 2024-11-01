@@ -376,7 +376,7 @@ class Auth {
     }
 
     /**
-     * Gets the Do-Not-Track (DNT) preference from the `dw_dnt` cookie.
+     * Gets the Do-Not-Track (DNT) preference to apply to analytics layers and ECOM.
      * If user has set their DNT preference, read the cookie, if not, use the default DNT pref. If the default DNT pref has not been set, default to false.
      */
     public getDntPreference() {
@@ -386,10 +386,14 @@ class Auth {
         let dntPref
         // Read `dw_dnt` cookie
         const dntCookie = dw_dnt === '1' ? true : dw_dnt === '0' ? false : undefined
-        dntPref = dntCookie
-
-        // If the cookie is not set, read the default DNT preference.
-        if (dntCookie === undefined) dntPref = defaultDnt !== undefined ? defaultDnt : false
+        if (dntCookie !== undefined) {
+            dntPref = dntCookie
+        }
+        else {
+            // If the cookie is not set, read the defaultDnt preference. 
+            // If defaultDnt doesn't exist, default to false, following SLAS default for dnt
+            dntPref = defaultDnt !== undefined ? defaultDnt : false
+        }
 
         return dntPref
     }
