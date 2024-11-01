@@ -437,7 +437,7 @@ describe('Auth', () => {
         // When user has not selected DNT pref
         [true, undefined, {dnt: true}],
         [false, undefined, {dnt: false}],
-        [undefined, undefined, {}],
+        [undefined, undefined, {dnt: false}],
         // When user has selected DNT, the dw_dnt cookie sets dnt
         [true, '0', {dnt: false}],
         [false, '1', {dnt: true}],
@@ -455,6 +455,12 @@ describe('Auth', () => {
                 expect.anything(),
                 expect.objectContaining(expected)
             )
+            const dntPref = auth.getDntPreference()
+            if ('dnt' in expected) {
+                expect(dntPref).toBe(expected.dnt)
+            } else {
+                expect(dntPref).toBe(false)
+            }
         }
     )
 
