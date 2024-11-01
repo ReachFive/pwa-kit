@@ -288,6 +288,9 @@ class Auth {
         storage.delete(key)
     }
 
+    /**
+     * Gets the status of the Do-Not-Track (DNT) local state, representing user choice.
+     */
     getDnt() {
         const dntCookieVal = this.get(DNT_COOKIE_NAME)
         // Only '1' or '0' are valid, and invalid values, lack of cookie, or value conflict with token must be an undefined DNT
