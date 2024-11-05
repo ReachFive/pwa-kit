@@ -18,8 +18,8 @@ import {keysToCamel} from '@salesforce/retail-react-app/app/utils/utils'
 import logger from '@salesforce/retail-react-app/app/utils/logger-instance'
 
 export class EinsteinAPI {
-    constructor({host, einsteinId, siteId, isProduction, finalDntValue}) {
-        this.finalDntValue = finalDntValue
+    constructor({host, einsteinId, siteId, isProduction, dnt}) {
+        this.dnt = dnt
         this.siteId = siteId
         this.isProduction = isProduction
         this.host = host
@@ -111,7 +111,7 @@ export class EinsteinAPI {
     }
 
     async einsteinFetch(endpoint, method, body) {
-        if (this.finalDntValue !== false) return {}
+        if (this.dnt !== false) return {}
 
         const headers = {
             'Content-Type': 'application/json',

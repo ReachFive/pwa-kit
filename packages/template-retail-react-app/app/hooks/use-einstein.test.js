@@ -20,7 +20,7 @@ const einsteinApi = new EinsteinAPI({
     host: `http://localhost/test-path`,
     einsteinId: 'test-id',
     siteId: 'test-site-id',
-    dntPreference: false
+    dnt: false
 })
 
 const fetchOriginal = global.fetch
