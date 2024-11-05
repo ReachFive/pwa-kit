@@ -18,6 +18,7 @@ interface useDntReturn {
  *              if the consent tracking form should be rendered
  * finalDntValue - a boolean indicating the current DNT preference to apply to
  *              analytics layers. Takes defaultDnt into account when dntStatus is undefined.
+ *              If defaultDnt is undefined as well, then PWA Kit default is used.
  * updateDNT - a function that takes a DNT choice and creates the dw_dnt
  *              cookie and reauthorizes with SLAS
  * @group Helpers
