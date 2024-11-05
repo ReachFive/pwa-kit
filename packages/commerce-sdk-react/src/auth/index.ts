@@ -293,22 +293,6 @@ class Auth {
      */
     getDnt(excludeNull?: boolean) {
         const dntCookieVal = this.get(DNT_COOKIE_NAME)
-        if (excludeNull) {
-            const defaultDnt = this.defaultDnt
-
-            let dntPref
-            // Read `dw_dnt` cookie
-            const dntCookie = dntCookieVal === '1' ? true : dntCookieVal === '0' ? false : undefined
-            if (dntCookie !== undefined) {
-                dntPref = dntCookie
-            } else {
-                // If the cookie is not set, read the defaultDnt preference.
-                // If defaultDnt doesn't exist, default to false, following SLAS default for dnt
-                dntPref = defaultDnt !== undefined ? defaultDnt : false
-            }
-
-            return dntPref
-        }
         // Only '1' or '0' are valid, and invalid values, lack of cookie, or value conflict with token must be an undefined DNT
         let dntCookieStatus = undefined
         const accessToken = this.getAccessToken()
@@ -322,6 +306,24 @@ class Auth {
         } else {
             dntCookieStatus = Boolean(Number(dntCookieVal))
         }
+
+        if (excludeNull) {
+            const defaultDnt = this.defaultDnt
+
+            let finalDntValue
+            // Read `dw_dnt` cookie
+            const dntCookie = dntCookieVal === '1' ? true : dntCookieVal === '0' ? false : undefined
+            if (dntCookie !== undefined) {
+                finalDntValue = dntCookie
+            } else {
+                // If the cookie is not set, read the defaultDnt preference.
+                // If defaultDnt doesn't exist, default to false, following SLAS default for dnt
+                finalDntValue = defaultDnt !== undefined ? defaultDnt : false
+            }
+
+            return finalDntValue
+        }
+
         return dntCookieStatus
     }
 

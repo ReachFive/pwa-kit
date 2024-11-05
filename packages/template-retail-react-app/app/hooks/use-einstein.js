@@ -111,6 +111,8 @@ export class EinsteinAPI {
     }
 
     async einsteinFetch(endpoint, method, body) {
+        if (this.finalDntValue !== false) return {}
+
         const headers = {
             'Content-Type': 'application/json',
             'x-cq-client-id': this.einsteinId
@@ -122,14 +124,13 @@ export class EinsteinAPI {
 
         let response
         try {
-            if (this.finalDntValue === false)
-                response = await fetch(`${this.host}/v3${endpoint}`, {
-                    method: method,
-                    headers: headers,
-                    ...(body && {
-                        body: JSON.stringify(body)
-                    })
+            response = await fetch(`${this.host}/v3${endpoint}`, {
+                method: method,
+                headers: headers,
+                ...(body && {
+                    body: JSON.stringify(body)
                 })
+            })
         } catch (error) {
             logger.error('Einstein request failed', {
                 namespace: 'useEinstein.einsteinFetch',
