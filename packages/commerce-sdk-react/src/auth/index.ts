@@ -289,11 +289,15 @@ class Auth {
     }
 
     /**
-     * Gets the status of the Do-Not-Track (DNT) local state, representing user choice.
+     * Return the value of the DNT cookie or undefined if it is not set. 
+     * If the cookie value is invalid, then it will be deleted in this function.
+     * 
+     * If excludeUndefined is true, then even if the cookie is not defined, 
+     * defaultDnt will be returned, if it exists. If defaultDnt is not defined, then
+     * the PWA Kit Default will return (false)
      */
-    getDnt(excludeNull?: boolean) {
+    getDnt(excludeUndefined?: boolean) {
         const dntCookieVal = this.get(DNT_COOKIE_NAME)
-        // Only '1' or '0' are valid, and invalid values, lack of cookie, or value conflict with token must be an undefined DNT
         let dntCookieStatus = undefined
         const accessToken = this.getAccessToken()
         let isInSync = true
@@ -307,7 +311,7 @@ class Auth {
             dntCookieStatus = Boolean(Number(dntCookieVal))
         }
 
-        if (excludeNull) {
+        if (excludeUndefined) {
             const defaultDnt = this.defaultDnt
 
             let finalDntValue
