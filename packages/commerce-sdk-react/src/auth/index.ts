@@ -291,8 +291,24 @@ class Auth {
     /**
      * Gets the status of the Do-Not-Track (DNT) local state, representing user choice.
      */
-    getDnt() {
+    getDnt(excludeNull?: boolean) {
         const dntCookieVal = this.get(DNT_COOKIE_NAME)
+        if (excludeNull) {
+            const defaultDnt = this.defaultDnt
+
+            let dntPref
+            // Read `dw_dnt` cookie
+            const dntCookie = dntCookieVal === '1' ? true : dntCookieVal === '0' ? false : undefined
+            if (dntCookie !== undefined) {
+                dntPref = dntCookie
+            } else {
+                // If the cookie is not set, read the defaultDnt preference.
+                // If defaultDnt doesn't exist, default to false, following SLAS default for dnt
+                dntPref = defaultDnt !== undefined ? defaultDnt : false
+            }
+
+            return dntPref
+        }
         // Only '1' or '0' are valid, and invalid values, lack of cookie, or value conflict with token must be an undefined DNT
         let dntCookieStatus = undefined
         const accessToken = this.getAccessToken()
@@ -376,28 +392,6 @@ class Auth {
         const validTimeSeconds = exp - iat - 60
         const tokenAgeSeconds = Date.now() / 1000 - iat
         return validTimeSeconds <= tokenAgeSeconds
-    }
-
-    /**
-     * Gets the Do-Not-Track (DNT) preference to apply to analytics layers and ECOM.
-     * If user has set their DNT preference, read the cookie, if not, use the default DNT pref. If the default DNT pref has not been set, default to false.
-     */
-    public getDntPreference() {
-        const dw_dnt = this.get(DNT_COOKIE_NAME)
-        const defaultDnt = this.defaultDnt
-
-        let dntPref
-        // Read `dw_dnt` cookie
-        const dntCookie = dw_dnt === '1' ? true : dw_dnt === '0' ? false : undefined
-        if (dntCookie !== undefined) {
-            dntPref = dntCookie
-        } else {
-            // If the cookie is not set, read the defaultDnt preference.
-            // If defaultDnt doesn't exist, default to false, following SLAS default for dnt
-            dntPref = defaultDnt !== undefined ? defaultDnt : false
-        }
-
-        return dntPref
     }
 
     /**
@@ -517,7 +511,7 @@ class Auth {
     }
 
     async refreshAccessToken() {
-        const dntPref = this.getDntPreference()
+        const dntPref = this.getDnt(true)
         const refreshTokenRegistered = this.get('refresh_token_registered')
         const refreshTokenGuest = this.get('refresh_token_guest')
         const refreshToken = refreshTokenRegistered || refreshTokenGuest
@@ -670,7 +664,7 @@ class Auth {
             this.logWarning(SLAS_SECRET_WARNING_MSG)
         }
         const usid = this.get('usid')
-        const dntPref = this.getDntPreference()
+        const dntPref = this.getDnt(true)
         const isGuest = true
         const guestPrivateArgs = [
             this.client,
@@ -745,7 +739,7 @@ class Auth {
         }
         const redirectURI = this.redirectURI
         const usid = this.get('usid')
-        const dntPref = this.getDntPreference()
+        const dntPref = this.getDnt(true)
         const isGuest = false
         const token = await helpers.loginRegisteredUserB2C(
             this.client,

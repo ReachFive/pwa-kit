@@ -18,8 +18,8 @@ import {keysToCamel} from '@salesforce/retail-react-app/app/utils/utils'
 import logger from '@salesforce/retail-react-app/app/utils/logger-instance'
 
 export class EinsteinAPI {
-    constructor({host, einsteinId, siteId, isProduction, dntPreference}) {
-        this.dntPreference = dntPreference
+    constructor({host, einsteinId, siteId, isProduction, finalDntValue}) {
+        this.finalDntValue = finalDntValue
         this.siteId = siteId
         this.isProduction = isProduction
         this.host = host
@@ -122,7 +122,7 @@ export class EinsteinAPI {
 
         let response
         try {
-            if (this.dntPreference === false)
+            if (this.finalDntValue === false)
                 response = await fetch(`${this.host}/v3${endpoint}`, {
                     method: method,
                     headers: headers,
@@ -391,7 +391,7 @@ export class EinsteinAPI {
 
 const useEinstein = () => {
     const api = useCommerceApi()
-    const {dntPreference} = useDNT()
+    const {finalDntValue} = useDNT()
     const {getTokenWhenReady} = useAccessToken()
     const {
         app: {einsteinAPI: config}
@@ -409,7 +409,7 @@ const useEinstein = () => {
                 einsteinId,
                 siteId,
                 isProduction,
-                dntPreference
+                finalDntValue
             }),
         [host, einsteinId, siteId, isProduction]
     )

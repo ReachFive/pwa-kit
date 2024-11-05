@@ -455,12 +455,9 @@ describe('Auth', () => {
                 expect.anything(),
                 expect.objectContaining(expected)
             )
-            const dntPref = auth.getDntPreference()
-            if ('dnt' in expected) {
-                expect(dntPref).toBe(expected.dnt)
-            } else {
-                expect(dntPref).toBe(false)
-            }
+            const expectedDnt = 'dnt' in expected ? expected.dnt : false
+            const dntPref = auth.getDnt(true)
+            expect(dntPref).toBe(expectedDnt)
         }
     )
 
