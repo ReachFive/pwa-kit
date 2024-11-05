@@ -27,7 +27,9 @@ interface useDntReturn {
 const useDNT = (): useDntReturn => {
     const auth = useAuthContext()
     const dntStatus = auth.getDnt()
-    const finalDntValue = auth.getDnt(true)
+    const finalDntValue = auth.getDnt({
+        useDefaults: true
+    })
     const updateDNT = async (preference: boolean | null) => {
         await auth.setDnt(preference)
     }

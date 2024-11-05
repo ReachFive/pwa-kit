@@ -490,7 +490,9 @@ describe('Auth', () => {
                 expect.objectContaining(expected)
             )
             const expectedDnt = 'dnt' in expected ? expected.dnt : false
-            const dntPref = auth.getDnt(true)
+            const dntPref = auth.getDnt({
+                useDefaults: true
+            })
             expect(dntPref).toBe(expectedDnt)
         }
     )

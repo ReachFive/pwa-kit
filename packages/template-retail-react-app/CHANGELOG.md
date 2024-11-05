@@ -1,7 +1,7 @@
 ## v5.0.0
 - (These will be merged later as the feature branch gets merged into V5 template retail react app branch)
 - DNT UI: [#2017](https://github.com/SalesforceCommerceCloud/pwa-kit/pull/2017)
-- DNT alter analytics: [#2109](https://github.com/SalesforceCommerceCloud/pwa-kit/pull/2109)
+- Support DNT status in analytics: [#2109](https://github.com/SalesforceCommerceCloud/pwa-kit/pull/2109)
 - DNT E2E: [#2083](https://github.com/SalesforceCommerceCloud/pwa-kit/pull/2083)
 
 ## v4.1.0-dev (Aug 8, 2024)

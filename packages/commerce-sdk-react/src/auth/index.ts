@@ -82,6 +82,9 @@ type AuthDataMap = Record<
         callback?: (storage: BaseStorage) => void
     }
 >
+type DntOptions = {
+    useDefaults: boolean
+}
 
 const isParentTrusted = isOriginTrusted(getParentOrigin())
 
@@ -297,11 +300,11 @@ class Auth {
      *
      * If the cookie value is invalid, then it will be deleted in this function.
      *
-     * If excludeUndefined is true, then even if the cookie is not defined,
+     * If useDefaults is true, then even if the cookie is not defined,
      * defaultDnt will be returned, if it exists. If defaultDnt is not defined, then
      * the PWA Kit Default will return (false)
      */
-    getDnt(excludeUndefined?: boolean) {
+    getDnt(options?: DntOptions) {
         const dntCookieVal = this.get(DNT_COOKIE_NAME)
         let dntCookieStatus = undefined
         const accessToken = this.getAccessToken()
@@ -316,7 +319,7 @@ class Auth {
             dntCookieStatus = Boolean(Number(dntCookieVal))
         }
 
-        if (excludeUndefined) {
+        if (options?.useDefaults) {
             const defaultDnt = this.defaultDnt
 
             let finalDntValue
@@ -521,7 +524,7 @@ class Auth {
     }
 
     async refreshAccessToken() {
-        const dntPref = this.getDnt(true)
+        const dntPref = this.getDnt({useDefaults: true})
         const refreshTokenRegistered = this.get('refresh_token_registered')
         const refreshTokenGuest = this.get('refresh_token_guest')
         const refreshToken = refreshTokenRegistered || refreshTokenGuest
@@ -674,7 +677,7 @@ class Auth {
             this.logWarning(SLAS_SECRET_WARNING_MSG)
         }
         const usid = this.get('usid')
-        const dntPref = this.getDnt(true)
+        const dntPref = this.getDnt({useDefaults: true})
         const isGuest = true
         const guestPrivateArgs = [
             this.client,
@@ -749,7 +752,7 @@ class Auth {
         }
         const redirectURI = this.redirectURI
         const usid = this.get('usid')
-        const dntPref = this.getDnt(true)
+        const dntPref = this.getDnt({useDefaults: true})
         const isGuest = false
         const token = await helpers.loginRegisteredUserB2C(
             this.client,
