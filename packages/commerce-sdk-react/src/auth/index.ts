@@ -289,10 +289,10 @@ class Auth {
     }
 
     /**
-     * Return the value of the DNT cookie or undefined if it is not set. 
+     * Return the value of the DNT cookie or undefined if it is not set.
      * If the cookie value is invalid, then it will be deleted in this function.
-     * 
-     * If excludeUndefined is true, then even if the cookie is not defined, 
+     *
+     * If excludeUndefined is true, then even if the cookie is not defined,
      * defaultDnt will be returned, if it exists. If defaultDnt is not defined, then
      * the PWA Kit Default will return (false)
      */
