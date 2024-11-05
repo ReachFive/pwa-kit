@@ -10,7 +10,6 @@ import jwt from 'jsonwebtoken'
 import {helpers} from 'commerce-sdk-isomorphic'
 import * as utils from '../utils'
 import {SLAS_SECRET_PLACEHOLDER} from '../constant'
-import {getDefaultCookieAttributes} from '../utils'
 // Use memory storage for all our storage types.
 jest.mock('./storage', () => {
     const originalModule = jest.requireActual('./storage')
@@ -304,8 +303,22 @@ describe('Auth', () => {
     })
     test('ready - use refresh token when access token is expired', async () => {
         const auth = new Auth(config)
-        const JWTNotExpired = jwt.sign({exp: Math.floor(Date.now() / 1000) + 1000}, 'secret')
-        const JWTExpired = jwt.sign({exp: Math.floor(Date.now() / 1000) - 1000}, 'secret')
+        const JWTNotExpired = jwt.sign(
+            {
+                exp: Math.floor(Date.now() / 1000) + 1000,
+                sub: `cc-slas::zzrf_001::scid:xxxxxx::usid:usid`,
+                isb: `uido:ecom::upn:test@gmail.com::uidn:firstname lastname::gcid:guestuserid::rcid:rcid::chid:siteId`
+            },
+            'secret'
+        )
+        const JWTExpired = jwt.sign(
+            {
+                exp: Math.floor(Date.now() / 1000) - 1000,
+                sub: `cc-slas::zzrf_001::scid:xxxxxx::usid:usid`,
+                isb: `uido:ecom::upn:test@gmail.com::uidn:firstname lastname::gcid:guestuserid::rcid:rcid::chid:siteId`
+            },
+            'secret'
+        )
 
         // To simulate real-world scenario, let's first test with a good valid token
         const data: StoredAuthData = {
@@ -340,8 +353,22 @@ describe('Auth', () => {
 
     test('ready - use refresh token when access token is expired with slas private client', async () => {
         const auth = new Auth(configSLASPrivate)
-        const JWTNotExpired = jwt.sign({exp: Math.floor(Date.now() / 1000) + 1000}, 'secret')
-        const JWTExpired = jwt.sign({exp: Math.floor(Date.now() / 1000) - 1000}, 'secret')
+        const JWTNotExpired = jwt.sign(
+            {
+                exp: Math.floor(Date.now() / 1000) + 1000,
+                sub: `cc-slas::zzrf_001::scid:xxxxxx::usid:usid`,
+                isb: `uido:ecom::upn:test@gmail.com::uidn:firstname lastname::gcid:guestuserid::rcid:rcid::chid:siteId`
+            },
+            'secret'
+        )
+        const JWTExpired = jwt.sign(
+            {
+                exp: Math.floor(Date.now() / 1000) - 1000,
+                sub: `cc-slas::zzrf_001::scid:xxxxxx::usid:usid`,
+                isb: `uido:ecom::upn:test@gmail.com::uidn:firstname lastname::gcid:guestuserid::rcid:rcid::chid:siteId`
+            },
+            'secret'
+        )
 
         // To simulate real-world scenario, let's first test with a good valid token
         const data: StoredAuthData = {
@@ -395,7 +422,14 @@ describe('Auth', () => {
             }
         })
 
-        const JWTExpired = jwt.sign({exp: Math.floor(Date.now() / 1000) - 1000}, 'secret')
+        const JWTExpired = jwt.sign(
+            {
+                exp: Math.floor(Date.now() / 1000) - 1000,
+                sub: `cc-slas::zzrf_001::scid:xxxxxx::usid:usid`,
+                isb: `uido:ecom::upn:test@gmail.com::uidn:firstname lastname::gcid:guestuserid::rcid:rcid::chid:siteId`
+            },
+            'secret'
+        )
 
         // To simulate real-world scenario, let's start with an expired access token
         const data: StoredAuthData = {

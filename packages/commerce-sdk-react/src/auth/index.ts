@@ -290,6 +290,11 @@ class Auth {
 
     /**
      * Return the value of the DNT cookie or undefined if it is not set.
+     * The DNT cookie being undefined means that there is a necessity to
+     * get the user's input for consent tracking, but not that there is no
+     * DNT value to apply to analytics layers. DNT value will default to
+     * a certain value and this is reflected by finalDntValue.
+     *
      * If the cookie value is invalid, then it will be deleted in this function.
      *
      * If excludeUndefined is true, then even if the cookie is not defined,
