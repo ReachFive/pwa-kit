@@ -410,9 +410,9 @@ const useEinstein = () => {
                 einsteinId,
                 siteId,
                 isProduction,
-                finalDntValue
+                dnt: finalDntValue
             }),
-        [host, einsteinId, siteId, isProduction]
+        [host, einsteinId, siteId, isProduction, finalDntValue]
     )
     const [isLoading, setIsLoading] = useState(false)
     const [recommendations, setRecommendations] = useState([])

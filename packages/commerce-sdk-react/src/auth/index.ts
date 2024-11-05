@@ -320,7 +320,6 @@ class Auth {
             const defaultDnt = this.defaultDnt
 
             let finalDntValue
-            // Read `dw_dnt` cookie
             const dntCookie = dntCookieVal === '1' ? true : dntCookieVal === '0' ? false : undefined
             if (dntCookie !== undefined) {
                 finalDntValue = dntCookie
