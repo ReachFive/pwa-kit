@@ -491,7 +491,7 @@ describe('Auth', () => {
             )
             const expectedDnt = 'dnt' in expected ? expected.dnt : false
             const dntPref = auth.getDnt({
-                useDefaults: true
+                includeDefaults: true
             })
             expect(dntPref).toBe(expectedDnt)
         }

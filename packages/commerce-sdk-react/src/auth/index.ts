@@ -83,7 +83,7 @@ type AuthDataMap = Record<
     }
 >
 type DntOptions = {
-    useDefaults: boolean
+    includeDefaults: boolean
 }
 
 const isParentTrusted = isOriginTrusted(getParentOrigin())
@@ -300,7 +300,7 @@ class Auth {
      *
      * If the cookie value is invalid, then it will be deleted in this function.
      *
-     * If useDefaults is true, then even if the cookie is not defined,
+     * If includeDefaults is true, then even if the cookie is not defined,
      * defaultDnt will be returned, if it exists. If defaultDnt is not defined, then
      * the PWA Kit Default will return (false)
      */
@@ -319,7 +319,7 @@ class Auth {
             dntCookieStatus = Boolean(Number(dntCookieVal))
         }
 
-        if (options?.useDefaults) {
+        if (options?.includeDefaults) {
             const defaultDnt = this.defaultDnt
 
             let finalDntValue
@@ -524,7 +524,7 @@ class Auth {
     }
 
     async refreshAccessToken() {
-        const dntPref = this.getDnt({useDefaults: true})
+        const dntPref = this.getDnt({includeDefaults: true})
         const refreshTokenRegistered = this.get('refresh_token_registered')
         const refreshTokenGuest = this.get('refresh_token_guest')
         const refreshToken = refreshTokenRegistered || refreshTokenGuest
@@ -677,7 +677,7 @@ class Auth {
             this.logWarning(SLAS_SECRET_WARNING_MSG)
         }
         const usid = this.get('usid')
-        const dntPref = this.getDnt({useDefaults: true})
+        const dntPref = this.getDnt({includeDefaults: true})
         const isGuest = true
         const guestPrivateArgs = [
             this.client,
@@ -752,7 +752,7 @@ class Auth {
         }
         const redirectURI = this.redirectURI
         const usid = this.get('usid')
-        const dntPref = this.getDnt({useDefaults: true})
+        const dntPref = this.getDnt({includeDefaults: true})
         const isGuest = false
         const token = await helpers.loginRegisteredUserB2C(
             this.client,
