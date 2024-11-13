@@ -302,7 +302,7 @@ class Auth {
      *
      * If includeDefaults is true, then even if the cookie is not defined,
      * defaultDnt will be returned, if it exists. If defaultDnt is not defined, then
-     * the PWA Kit Default will return (false)
+     * the SDK Default will return (false)
      */
     getDnt(options?: DntOptions) {
         const dntCookieVal = this.get(DNT_COOKIE_NAME)
