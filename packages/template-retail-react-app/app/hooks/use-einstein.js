@@ -392,7 +392,7 @@ export class EinsteinAPI {
 
 const useEinstein = () => {
     const api = useCommerceApi()
-    const {finalDntValue} = useDNT()
+    const {effectiveDoNotTrackValue} = useDNT()
     const {getTokenWhenReady} = useAccessToken()
     const {
         app: {einsteinAPI: config}
@@ -410,9 +410,9 @@ const useEinstein = () => {
                 einsteinId,
                 siteId,
                 isProduction,
-                dnt: finalDntValue
+                dnt: effectiveDoNotTrackValue
             }),
-        [host, einsteinId, siteId, isProduction, finalDntValue]
+        [host, einsteinId, siteId, isProduction, effectiveDoNotTrackValue]
     )
     const [isLoading, setIsLoading] = useState(false)
     const [recommendations, setRecommendations] = useState([])

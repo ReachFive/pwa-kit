@@ -13,9 +13,9 @@ const buttonStyle = {
 
 const UseDntHook = () => {
     const [displayButton, setDisplayButton] = useState(false)
-    const {dntStatus, updateDNT} = useDNT()
+    const {selectedDoNotTrackValue, updateDNT} = useDNT()
     useEffect(() => {
-        if (dntStatus === undefined) setDisplayButton(true)
+        if (selectedDoNotTrackValue === undefined) setDisplayButton(true)
     }, [])
 
     return displayButton ? (

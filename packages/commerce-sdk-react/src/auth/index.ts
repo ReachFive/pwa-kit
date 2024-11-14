@@ -296,7 +296,7 @@ class Auth {
      * The DNT cookie being undefined means that there is a necessity to
      * get the user's input for consent tracking, but not that there is no
      * DNT value to apply to analytics layers. DNT value will default to
-     * a certain value and this is reflected by finalDntValue.
+     * a certain value and this is reflected by effectiveDoNotTrackValue.
      *
      * If the cookie value is invalid, then it will be deleted in this function.
      *
@@ -322,17 +322,17 @@ class Auth {
         if (options?.includeDefaults) {
             const defaultDnt = this.defaultDnt
 
-            let finalDntValue
+            let effectiveDoNotTrackValue
             const dntCookie = dntCookieVal === '1' ? true : dntCookieVal === '0' ? false : undefined
             if (dntCookie !== undefined) {
-                finalDntValue = dntCookie
+                effectiveDoNotTrackValue = dntCookie
             } else {
                 // If the cookie is not set, read the defaultDnt preference.
                 // If defaultDnt doesn't exist, default to false, following SLAS default for dnt
-                finalDntValue = defaultDnt !== undefined ? defaultDnt : false
+                effectiveDoNotTrackValue = defaultDnt !== undefined ? defaultDnt : false
             }
 
-            return finalDntValue
+            return effectiveDoNotTrackValue
         }
 
         return dntCookieStatus

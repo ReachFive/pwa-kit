@@ -7,17 +7,18 @@
 import useAuthContext from './useAuthContext'
 
 interface useDntReturn {
+    selectedDoNotTrackValue: boolean | undefined
     dntStatus: boolean | undefined
-    finalDntValue: boolean | undefined
+    effectiveDoNotTrackValue: boolean | undefined
     updateDNT: (preference: boolean | null) => Promise<void>
 }
 
 /**
  * Hook that returns
- * dntStatus - a boolean indicating the DNT user choice status. Used to determine
+ * selectedDoNotTrackValue - a boolean indicating the DNT user choice status. Used to determine
  *              if the consent tracking form should be rendered
- * finalDntValue - a boolean indicating the current DNT preference to apply to
- *              analytics layers. Takes defaultDnt into account when dntStatus is undefined.
+ * effectiveDoNotTrackValue - a boolean indicating the current DNT preference to apply to
+ *              analytics layers. Takes defaultDnt into account when selectedDoNotTrackValue is undefined.
  *              If defaultDnt is undefined as well, then SDK default is used.
  * updateDNT - a function that takes a DNT choice and creates the dw_dnt
  *              cookie and reauthorizes with SLAS
@@ -27,15 +28,16 @@ interface useDntReturn {
  */
 const useDNT = (): useDntReturn => {
     const auth = useAuthContext()
-    const dntStatus = auth.getDnt()
-    const finalDntValue = auth.getDnt({
+    const selectedDoNotTrackValue = auth.getDnt()
+    const effectiveDoNotTrackValue = auth.getDnt({
         includeDefaults: true
     })
     const updateDNT = async (preference: boolean | null) => {
         await auth.setDnt(preference)
     }
+    const dntStatus = selectedDoNotTrackValue
 
-    return {dntStatus, finalDntValue, updateDNT}
+    return {selectedDoNotTrackValue, effectiveDoNotTrackValue, dntStatus, updateDNT}
 }
 
 export default useDNT
