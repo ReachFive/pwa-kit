@@ -14,16 +14,20 @@ interface useDntReturn {
 }
 
 /**
- * Hook that returns
- * selectedDoNotTrackValue - a boolean indicating the DNT user choice status. Used to determine
- *              if the consent tracking form should be rendered
- * effectiveDoNotTrackValue - a boolean indicating the current DNT preference to apply to
- *              analytics layers. Takes defaultDnt into account when selectedDoNotTrackValue is undefined.
- *              If defaultDnt is undefined as well, then SDK default is used.
- * updateDNT - a function that takes a DNT choice and creates the dw_dnt
- *              cookie and reauthorizes with SLAS
  * @group Helpers
  * @category DNT
+ *
+ * @returns {Object} - The returned object containing DNT states and function to update preference
+ * @property {boolean | undefined} dntStatus @deprecated - DNT user preference. Used to determine
+ *              if the consent tracking form should be rendered
+ * **Deprecated since version 3.1.0 Use selectedDoNotTrackValue instead.**
+ * @property {boolean} selectedDoNotTrackValue - DNT user preference. Used to determine
+ *              if the consent tracking form should be rendered
+ * @property {boolean} effectiveDoNotTrackValue - effective DNT value to apply to
+ *              analytics layers. Takes defaultDnt into account when selectedDoNotTrackValue is undefined.
+ *              If defaultDnt is undefined as well, then SDK default is used.
+ * @property {function} updateDNT - takes a DNT choice and creates the dw_dnt
+ *              cookie and reauthorizes with SLAS
  *
  */
 const useDNT = (): useDntReturn => {
@@ -37,7 +41,13 @@ const useDNT = (): useDntReturn => {
     }
     const dntStatus = selectedDoNotTrackValue
 
-    return {selectedDoNotTrackValue, effectiveDoNotTrackValue, dntStatus, updateDNT}
+    return {
+        selectedDoNotTrackValue,
+        effectiveDoNotTrackValue,
+        /** @deprecated - Deprecated since version 3.1.0. Use selectedDoNotTrackValue instead. */
+        dntStatus,
+        updateDNT
+    }
 }
 
 export default useDNT
