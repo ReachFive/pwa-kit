@@ -1,7 +1,10 @@
+## v3.3.0-dev
+- Updated useDNT and auth to expose more DNT features [#2109](https://github.com/SalesforceCommerceCloud/pwa-kit/pull/2109)
+
 ## v3.2.0-dev (Oct 14, 2024)
 
 - Add the `authorizeCustomer` and `getPasswordResetToken` to the `ShopperLoginMutations` [#2056](https://github.com/SalesforceCommerceCloud/pwa-kit/pull/2056)
-- Added useDNT hook to commerce-sdk-react and put DNT in auth [#2067](https://github.com/SalesforceCommerceCloud/pwa-kit/pull/2067/files)
+- Added useDNT hook to commerce-sdk-react and put DNT in auth [#2067](https://github.com/SalesforceCommerceCloud/pwa-kit/pull/2067)
 
 ## v3.1.0-dev (Aug 08, 2024)
 

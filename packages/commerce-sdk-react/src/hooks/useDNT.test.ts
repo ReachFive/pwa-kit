@@ -43,26 +43,26 @@ describe('useDNT tests', () => {
         expect(mockSetDnt).toHaveBeenCalledWith(true)
     })
 
-    it('dntStatus should be false if dw_dnt cookie is "1"', () => {
-        const {dntStatus} = useDNT()
-        expect(dntStatus).toBe(true)
+    it('selectedDoNotTrackValue should be false if dw_dnt cookie is "1"', () => {
+        const {selectedDoNotTrackValue} = useDNT()
+        expect(selectedDoNotTrackValue).toBe(true)
     })
 
-    it('dntStatus should be false if dw_dnt cookie is "0"', () => {
+    it('selectedDoNotTrackValue should be false if dw_dnt cookie is "0"', () => {
         mockGetDnt.mockReturnValue(false)
-        const {dntStatus} = useDNT()
-        expect(dntStatus).toBe(false)
+        const {selectedDoNotTrackValue} = useDNT()
+        expect(selectedDoNotTrackValue).toBe(false)
     })
 
-    it('dntStatus should be undefined if dw_dnt cookie is not defined', () => {
+    it('selectedDoNotTrackValue should be undefined if dw_dnt cookie is not defined', () => {
         mockGetDnt.mockReturnValueOnce(undefined)
-        const {dntStatus} = useDNT()
-        expect(dntStatus).toBeUndefined()
+        const {selectedDoNotTrackValue} = useDNT()
+        expect(selectedDoNotTrackValue).toBeUndefined()
     })
 
-    it('dntStatus should be undefined if dw_dnt cookie is invalid', () => {
+    it('selectedDoNotTrackValue should be undefined if dw_dnt cookie is invalid', () => {
         mockGetDnt.mockReturnValueOnce(undefined)
-        const {dntStatus} = useDNT()
-        expect(dntStatus).toBeUndefined()
+        const {selectedDoNotTrackValue} = useDNT()
+        expect(selectedDoNotTrackValue).toBeUndefined()
     })
 })
