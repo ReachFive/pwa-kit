@@ -75,11 +75,6 @@ const ContactInfo = () => {
                 const hasBasketItem = basket.productItems?.length > 0
                 if (hasBasketItem) {
                     mergeBasket.mutate({
-                        headers: {
-                            // This is not required since the request has no body
-                            // but CommerceAPI throws a '419 - Unsupported Media Type' error if this header is removed.
-                            'Content-Type': 'application/json'
-                        },
                         parameters: {
                             createDestinationBasket: true
                         }

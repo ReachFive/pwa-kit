@@ -1,5 +1,8 @@
 ## v5.1.0 (TBD)
 
+- Replace transfer basket call with merge basket on checkout [#2138])(https://github.com/SalesforceCommerceCloud/pwa-kit/pull/2138)
+
+
 ### Accessibility Improvements
 - [a11y] Fix LinkList component to follow a11y practise [#2098])(https://github.com/SalesforceCommerceCloud/pwa-kit/pull/2098)
 
