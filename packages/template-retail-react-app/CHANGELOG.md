@@ -1,4 +1,4 @@
-## v5.1.0 (TBD)
+## v5.1.0-dev (TBD)
 
 - Replace transfer basket call with merge basket on checkout [#2138])(https://github.com/SalesforceCommerceCloud/pwa-kit/pull/2138)
 
