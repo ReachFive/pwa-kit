@@ -1,6 +1,6 @@
 ## v5.0.1-dev (TBD)
 
--   [BUG] Fixed "getCheckboxProps is not a function" when rendering checkout page in generated app.[#2098])(https://github.com/SalesforceCommerceCloud/pwa-kit/pull/2098)
+-   [BUG] Fixed "getCheckboxProps is not a function" when rendering checkout page in generated app.[#2140](https://github.com/SalesforceCommerceCloud/pwa-kit/pull/2140)
 
 ### Accessibility Improvements
 
