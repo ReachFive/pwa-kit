@@ -196,7 +196,13 @@ export const cacheUpdateMatrix: CacheUpdateMatrix<Client> = {
             update: [
                 {queryKey: getBasket.queryKey({...parameters, basketId})},
                 ...(registeredCustomerId && basketId
-                    ? [updateCustomerBasketsQuery(registeredCustomerId, {...parameters, basketId}, response)]
+                    ? [
+                          updateCustomerBasketsQuery(
+                              registeredCustomerId,
+                              {...parameters, basketId},
+                              response
+                          )
+                      ]
                     : [])
             ]
         }
