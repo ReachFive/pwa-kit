@@ -14,7 +14,7 @@
 
 import React from 'react'
 import loadable from '@loadable/component'
-import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
+import { getConfig } from '@salesforce/pwa-kit-runtime/utils/ssr-config'
 
 // Components
 import {Skeleton} from '@salesforce/retail-react-app/app/components/shared/ui'
@@ -30,14 +30,14 @@ const fallback = <Skeleton height="75vh" width="100%" />
 const socialRedirectURI = getConfig()?.app?.login?.social?.redirectURI
 
 // Pages
-const Home = loadable(() => import('./pages/home'), {fallback})
-const Login = loadable(() => import('./pages/login'), {fallback})
+const Home = loadable(() => import('./pages/home'), { fallback })
+const Login = loadable(() => import('./pages/login'), { fallback })
 const Registration = loadable(() => import('./pages/registration'), {
     fallback
 })
-const ResetPassword = loadable(() => import('./pages/reset-password'), {fallback})
-const Account = loadable(() => import('./pages/account'), {fallback})
-const Cart = loadable(() => import('./pages/cart'), {fallback})
+const ResetPassword = loadable(() => import('./pages/reset-password'), { fallback })
+const Account = loadable(() => import('./pages/account'), { fallback })
+const Cart = loadable(() => import('./pages/cart'), { fallback })
 const Checkout = loadable(() => import('./pages/checkout'), {
     fallback
 })
@@ -55,6 +55,8 @@ const Wishlist = loadable(() => import('./pages/account/wishlist'), {
     fallback
 })
 const PageNotFound = loadable(() => import('./pages/page-not-found'))
+const IDPCallback = loadable(() => import('./pages/idp-callback'), { fallback })
+const Auth = loadable(() => import('./pages/reach_five/Auth'), { fallback })
 
 export const routes = [
     {
@@ -108,6 +110,11 @@ export const routes = [
     {
         path: socialRedirectURI || '/social-callback',
         component: SocialLoginRedirect,
+        exact: true
+    },
+    {
+        path: '/reach-five/auth',
+        component: Auth,
         exact: true
     },
     {

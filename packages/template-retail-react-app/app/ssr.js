@@ -313,7 +313,8 @@ const {handler} = runtime.createHandler(options, (app) => {
                     ],
                     'connect-src': [
                         // Connect to Einstein APIs
-                        'api.cquotient.com'
+                        'api.cquotient.com',
+                        'sandbox-tif.reach5.net' // to allow reach5 to sdkUI
                     ]
                 }
             }
