@@ -20,11 +20,17 @@ import {
 import useNavigation from '@salesforce/retail-react-app/app/hooks/use-navigation'
 import Seo from '@salesforce/retail-react-app/app/components/seo'
 import {useForm} from 'react-hook-form'
+import {useRouteMatch} from 'react-router'
 import {useLocation} from 'react-router-dom'
 import useEinstein from '@salesforce/retail-react-app/app/hooks/use-einstein'
 import LoginForm from '@salesforce/retail-react-app/app/components/login'
 import PasswordlessEmailConfirmation from '@salesforce/retail-react-app/app/components/email-confirmation/index'
-import {API_ERROR_MESSAGE} from '@salesforce/retail-react-app/app/constants'
+import {
+    API_ERROR_MESSAGE,
+    INVALID_TOKEN_ERROR_MESSAGE,
+    LOGIN_TYPES,
+    PASSWORDLESS_LOGIN_LANDING_PATH
+} from '@salesforce/retail-react-app/app/constants'
 import {usePrevious} from '@salesforce/retail-react-app/app/hooks/use-previous'
 import {isServer} from '@salesforce/retail-react-app/app/utils/utils'
 import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
@@ -42,9 +48,13 @@ const Login = ({initialView = LOGIN_VIEW}) => {
     const navigate = useNavigation()
     const form = useForm()
     const location = useLocation()
+    const queryParams = new URLSearchParams(location.search)
+    const {path} = useRouteMatch()
     const einstein = useEinstein()
     const {isRegistered, customerType} = useCustomerType()
     const login = useAuthHelper(AuthHelpers.LoginRegisteredUserB2C)
+    const loginPasswordless = useAuthHelper(AuthHelpers.LoginPasswordlessUser)
+    const authorizePasswordlessLogin = useAuthHelper(AuthHelpers.AuthorizePasswordless)
     const {passwordless = {}, social = {}} = getConfig().app.login || {}
     const isPasswordlessEnabled = !!passwordless?.enabled
     const isSocialEnabled = !!social?.enabled
@@ -52,62 +62,102 @@ const Login = ({initialView = LOGIN_VIEW}) => {
 
     const customerId = useCustomerId()
     const prevAuthType = usePrevious(customerType)
-    const {data: baskets} = useCustomerBaskets(
+    const {data: baskets, isSuccess: isSuccessCustomerBaskets} = useCustomerBaskets(
         {parameters: {customerId}},
         {enabled: !!customerId && !isServer, keepPreviousData: true}
     )
     const mergeBasket = useShopperBasketsMutation('mergeBasket')
     const [currentView, setCurrentView] = useState(initialView)
     const [passwordlessLoginEmail, setPasswordlessLoginEmail] = useState('')
-    const [loginType, setLoginType] = useState('password')
+    const [loginType, setLoginType] = useState(LOGIN_TYPES.PASSWORD)
+
+    const handleMergeBasket = () => {
+        const hasBasketItem = baskets?.baskets?.[0]?.productItems?.length > 0
+        // we only want to merge basket when the user is logged in as a recurring user
+        // only recurring users trigger the login mutation, new user triggers register mutation
+        // this logic needs to stay in this block because this is the only place that tells if a user is a recurring user
+        // if you change logic here, also change it in login page
+        const shouldMergeBasket = hasBasketItem && prevAuthType === 'guest'
+        if (shouldMergeBasket) {
+            try {
+                mergeBasket.mutate({
+                    headers: {
+                        // This is not required since the request has no body
+                        // but CommerceAPI throws a '419 - Unsupported Media Type' error if this header is removed.
+                        'Content-Type': 'application/json'
+                    },
+                    parameters: {
+                        createDestinationBasket: true
+                    }
+                })
+            } catch (e) {
+                form.setError('global', {
+                    type: 'manual',
+                    message: formatMessage(API_ERROR_MESSAGE)
+                })
+            }
+        }
+    }
 
     const submitForm = async (data) => {
         form.clearErrors()
 
+        const handlePasswordlessLogin = async (email) => {
+            try {
+                await authorizePasswordlessLogin.mutateAsync({userid: email})
+            } catch (error) {
+                form.setError('global', {
+                    type: 'manual',
+                    message: formatMessage(API_ERROR_MESSAGE)
+                })
+            }
+        }
+
         return {
             login: async (data) => {
-                if (loginType === 'password') {
+                if (loginType === LOGIN_TYPES.PASSWORD) {
                     try {
                         await login.mutateAsync({username: data.email, password: data.password})
-                        const hasBasketItem = baskets?.baskets?.[0]?.productItems?.length > 0
-                        // we only want to merge basket when the user is logged in as a recurring user
-                        // only recurring users trigger the login mutation, new user triggers register mutation
-                        // this logic needs to stay in this block because this is the only place that tells if a user is a recurring user
-                        // if you change logic here, also change it in login page
-                        const shouldMergeBasket = hasBasketItem && prevAuthType === 'guest'
-                        if (shouldMergeBasket) {
-                            mergeBasket.mutate({
-                                headers: {
-                                    // This is not required since the request has no body
-                                    // but CommerceAPI throws a '419 - Unsupported Media Type' error if this header is removed.
-                                    'Content-Type': 'application/json'
-                                },
-                                parameters: {
-                                    createDestinationBasket: true
-                                }
-                            })
-                        }
                     } catch (error) {
                         const message = /Unauthorized/i.test(error.message)
                             ? formatMessage(LOGIN_ERROR_MESSAGE)
                             : formatMessage(API_ERROR_MESSAGE)
                         form.setError('global', {type: 'manual', message})
                     }
-                } else if (loginType === 'passwordless') {
+                    handleMergeBasket()
+                } else if (loginType === LOGIN_TYPES.PASSWORDLESS) {
                     setCurrentView(EMAIL_VIEW)
                     setPasswordlessLoginEmail(data.email)
-                    // Handle passwordless login logic here
+                    await handlePasswordlessLogin(data.email)
                 }
             },
-            email: async (data) => {
-                // Handle resend passwordless email logic here
+            email: async () => {
+                await handlePasswordlessLogin(passwordlessLoginEmail)
             }
         }[currentView](data)
     }
 
-    // If customer is registered push to account page
+    // Handles passwordless login by retrieving the 'token' from the query parameters and
+    // executing a passwordless login attempt using the token. The process waits for the
+    // customer baskets to be loaded to guarantee proper basket merging.
+    useEffect(() => {
+        if (path === PASSWORDLESS_LOGIN_LANDING_PATH && isSuccessCustomerBaskets) {
+            const token = queryParams.get('token')
+            try {
+                loginPasswordless.mutate({pwdlessLoginToken: token})
+            } catch (e) {
+                const message = /Unauthorized/i.test(e.message)
+                    ? formatMessage(INVALID_TOKEN_ERROR_MESSAGE)
+                    : formatMessage(API_ERROR_MESSAGE)
+                form.setError('global', {type: 'manual', message})
+            }
+        }
+    }, [path, isSuccessCustomerBaskets])
+
+    // If customer is registered push to account page and merge the basket
     useEffect(() => {
         if (isRegistered) {
+            handleMergeBasket()
             if (location?.state?.directedFrom) {
                 navigate(location.state.directedFrom)
             } else {
@@ -139,7 +189,7 @@ const Login = ({initialView = LOGIN_VIEW}) => {
                         submitForm={submitForm}
                         clickCreateAccount={() => navigate('/registration')}
                         handlePasswordlessLoginClick={() => {
-                            setLoginType('passwordless')
+                            setLoginType(LOGIN_TYPES.PASSWORDLESS)
                         }}
                         handleForgotPasswordClick={() => navigate('/reset-password')}
                         isPasswordlessEnabled={isPasswordlessEnabled}

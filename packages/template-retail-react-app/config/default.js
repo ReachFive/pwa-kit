@@ -17,13 +17,16 @@ module.exports = {
         },
         login: {
             passwordless: {
-                enabled: true,
-                callbackURI: 'https://webhook.site/27761b71-50c1-4097-a600-21a3b89a546c'
+                enabled: false,
+                callbackURI: '/passwordless-login-callback'
             },
             social: {
-                enabled: true,
+                enabled: false,
                 idps: ['google', 'apple'],
                 redirectURI: '/social-callback'
+            },
+            resetPassword: {
+                callbackURI: '/reset-password-callback'
             }
         },
         defaultSite: 'RefArchGlobal',

@@ -1521,6 +1521,12 @@
       "value": "Wishlist"
     }
   ],
+  "global.error.invalid_token": [
+    {
+      "type": 0,
+      "value": "Invalid token, please try again."
+    }
+  ],
   "global.error.something_went_wrong": [
     {
       "type": 0,
@@ -2503,6 +2509,12 @@
       "value": "1 uppercase letter"
     }
   ],
+  "password_reset_success.toast": [
+    {
+      "type": 0,
+      "value": "Password Reset Success"
+    }
+  ],
   "payment_selection.heading.credit_card": [
     {
       "type": 0,
@@ -2977,38 +2989,6 @@
     {
       "type": 0,
       "value": "Create an account and get first access to the very best products, inspiration and community."
-    }
-  ],
-  "reset_password.button.back_to_sign_in": [
-    {
-      "type": 0,
-      "value": "Back to Sign In"
-    }
-  ],
-  "reset_password.info.receive_email_shortly": [
-    {
-      "type": 0,
-      "value": "You will receive an email at "
-    },
-    {
-      "children": [
-        {
-          "type": 1,
-          "value": "email"
-        }
-      ],
-      "type": 8,
-      "value": "b"
-    },
-    {
-      "type": 0,
-      "value": " with a link to reset your password shortly."
-    }
-  ],
-  "reset_password.title.password_reset": [
-    {
-      "type": 0,
-      "value": "Password Reset"
     }
   ],
   "reset_password_form.action.sign_in": [

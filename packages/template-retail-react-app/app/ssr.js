@@ -22,6 +22,15 @@ import {defaultPwaKitSecurityHeaders} from '@salesforce/pwa-kit-runtime/utils/mi
 import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
 import helmet from 'helmet'
 
+import express from 'express'
+import {emailLink} from '@salesforce/retail-react-app/app/utils/marketing-cloud/marketing-cloud-email-link'
+import {
+    PASSWORDLESS_LOGIN_LANDING_PATH,
+    RESET_PASSWORD_LANDING_PATH
+} from '@salesforce/retail-react-app/app/constants'
+
+const config = getConfig()
+
 const options = {
     // The build directory (an absolute path)
     buildDir: path.resolve(process.cwd(), 'build'),
@@ -30,7 +39,7 @@ const options = {
     defaultCacheTimeSeconds: 600,
 
     // The contents of the config file for the current environment
-    mobify: getConfig(),
+    mobify: config,
 
     // The port that the local dev server listens on
     port: 3000,
@@ -45,7 +54,9 @@ const options = {
     // Set this to false if using a SLAS public client
     // When setting this to true, make sure to also set the PWA_KIT_SLAS_CLIENT_SECRET
     // environment variable as this endpoint will return HTTP 501 if it is not set
-    useSLASPrivateClient: false,
+    useSLASPrivateClient: true,
+    applySLASPrivateClientToEndpoints:
+        /oauth2\/(token|passwordless|password\/(login|token|reset|action))/,
 
     // If this is enabled, any HTTP header that has a non ASCII value will be URI encoded
     // If there any HTTP headers that have been encoded, an additional header will be
@@ -57,6 +68,34 @@ const options = {
 }
 
 const runtime = getRuntime()
+
+const resetPasswordCallback =
+    config.app.login?.resetPassword?.callbackURI || '/reset-password-callback'
+const passwordlessLoginCallback =
+    config.app.login?.passwordless?.callbackURI || '/passwordless-login-callback'
+
+// Reusable function to handle sending a magic link email.
+// By default, this imp[lmenetation uses Marketing Cloud.
+async function sendMagicLinkEmail(req, res, landingPath, emailTemplate) {
+    // Extract the base URL from the request
+    const base = req.protocol + '://' + req.get('host')
+
+    // Extract the email_id and token from the request body
+    const {email_id, token} = req.body
+
+    // Construct the magic link URL
+    let magicLink = `${base}${landingPath}?token=${token}`
+    if (landingPath === RESET_PASSWORD_LANDING_PATH) {
+        // Add email query parameter for reset password flow
+        magicLink += `&email=${email_id}`
+    }
+
+    // Call the emailLink function to send an email with the magic link using Marketing Cloud
+    const emailLinkResponse = await emailLink(email_id, emailTemplate, magicLink)
+
+    // Send the response
+    res.send(emailLinkResponse)
+}
 
 const {handler} = runtime.createHandler(options, (app) => {
     // Set default HTTP security headers required by PWA Kit
@@ -90,6 +129,32 @@ const {handler} = runtime.createHandler(options, (app) => {
         // Thus we cache it for a year to maximize performance
         res.set('Cache-Control', `max-age=31536000`)
         res.send()
+    })
+
+    // Handles the passwordless login callback route. SLAS makes a POST request to this
+    // endpoint sending the email address and passwordless token. Then this endpoint calls
+    // the sendMagicLinkEmail function to send an email with the passwordless login magic link.
+    // https://developer.salesforce.com/docs/commerce/commerce-api/guide/slas-passwordless-login.html#receive-the-callback
+    app.post(passwordlessLoginCallback, express.json(), (req, res) => {
+        sendMagicLinkEmail(
+            req,
+            res,
+            PASSWORDLESS_LOGIN_LANDING_PATH,
+            process.env.MARKETING_CLOUD_PASSWORDLESS_LOGIN_TEMPLATE
+        )
+    })
+
+    // Handles the reset password callback route. SLAS makes a POST request to this
+    // endpoint sending the email address and reset password token. Then this endpoint calls
+    // the sendMagicLinkEmail function to send an email with the reset password magic link.
+    // https://developer.salesforce.com/docs/commerce/commerce-api/guide/slas-password-reset.html#slas-password-reset-flow
+    app.post(resetPasswordCallback, express.json(), (req, res) => {
+        sendMagicLinkEmail(
+            req,
+            res,
+            RESET_PASSWORD_LANDING_PATH,
+            process.env.MARKETING_CLOUD_RESET_PASSWORD_TEMPLATE
+        )
     })
 
     app.get('/robots.txt', runtime.serveStaticFile('static/robots.txt'))

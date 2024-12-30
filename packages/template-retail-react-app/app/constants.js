@@ -91,6 +91,10 @@ export const API_ERROR_MESSAGE = defineMessage({
     id: 'global.error.something_went_wrong',
     defaultMessage: 'Something went wrong. Try again!'
 })
+export const INVALID_TOKEN_ERROR_MESSAGE = defineMessage({
+    defaultMessage: 'Invalid token, please try again.',
+    id: 'global.error.invalid_token'
+})
 
 export const HOME_HREF = '/'
 
@@ -231,3 +235,16 @@ export const SHOPPER_CONTEXT_SEARCH_PARAMS = {
         // Add assignment qualifiers here
     }
 }
+
+// Constants for Login
+export const LOGIN_TYPES = {
+    PASSWORD: 'password',
+    PASSWORDLESS: 'passwordless',
+    SOCIAL: 'social'
+}
+
+// Constants for Password Reset
+export const RESET_PASSWORD_LANDING_PATH = '/reset-password-landing'
+
+// Constants for Passwordless Login
+export const PASSWORDLESS_LOGIN_LANDING_PATH = '/passwordless-login-landing'
