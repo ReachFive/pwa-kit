@@ -1,8 +1,9 @@
-## v5.0.0
-- (These will be merged later as the feature branch gets merged into V5 template retail react app branch)
+## v6.0.0
+- (These will be merged later as the feature branch gets merged into V6 template retail react app branch)
 - DNT UI: [#2017](https://github.com/SalesforceCommerceCloud/pwa-kit/pull/2017)
 - Support DNT in analytics: [#2109](https://github.com/SalesforceCommerceCloud/pwa-kit/pull/2109)
 - DNT E2E: [#2083](https://github.com/SalesforceCommerceCloud/pwa-kit/pull/2083)
+- Improve wording for DNT interface [#2182](https://github.com/SalesforceCommerceCloud/pwa-kit/pull/2182/files)
 
 ## v4.1.0-dev (Aug 8, 2024)
 - Announce wishlist change in total for screen readers (a11y) [#2033](https://github.com/SalesforceCommerceCloud/pwa-kit/pull/2033)
