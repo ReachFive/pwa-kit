@@ -24,17 +24,17 @@ import {useDNT} from '@salesforce/commerce-sdk-react'
 import {useLocation} from 'react-router-dom'
 
 export const DntNotification = ({isOpen, onOpen, onClose}) => {
-    const {selectedDoNotTrackValue, updateDNT} = useDNT()
+    const {selectedDnt, updateDNT} = useDNT()
     const {formatMessage} = useIntl()
     const location = useLocation()
 
     useEffect(() => {
-        if (selectedDoNotTrackValue === undefined) {
+        if (selectedDnt === undefined) {
             onOpen()
         } else {
             onClose()
         }
-    }, [location, selectedDoNotTrackValue])
+    }, [location, selectedDnt])
 
     const onCloseNotification = () => {
         updateDNT(null)
