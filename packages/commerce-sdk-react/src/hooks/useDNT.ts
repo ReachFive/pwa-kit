@@ -28,7 +28,7 @@ interface useDntReturn {
  *              cookie and reauthorizes with SLAS
  * @property {function} updateDNT - @deprecated Deprecated since version 3.1.0. Use updateDnt instead.
  * @property {boolean} dntStatus - @deprecated Deprecated since version 3.1.0. Use selectedDnt instead.
- * 
+ *
  *
  */
 const useDNT = (): useDntReturn => {
