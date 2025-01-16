@@ -17,6 +17,7 @@ const StandardLogin = ({
     handleForgotPasswordClick,
     hideEmail = false,
     isSocialEnabled = false,
+    setShowPasswordView,
     idps = []
 }) => {
     return (
@@ -28,7 +29,7 @@ const StandardLogin = ({
                     handleForgotPasswordClick={handleForgotPasswordClick}
                 />
             </Stack>
-            <Stack spacing={6}>
+            <Stack spacing={2}>
                 <Button
                     type="submit"
                     onClick={() => {
@@ -50,6 +51,14 @@ const StandardLogin = ({
                         <SocialLogin form={form} idps={idps} />
                     </>
                 )}
+                <Button
+                    onClick={() => setShowPasswordView(false)}
+                    borderColor="gray.500"
+                    color="blue.600"
+                    variant="outline"
+                >
+                    <FormattedMessage defaultMessage="Back" id="login_form.button.back" />
+                </Button>
             </Stack>
         </Stack>
     )
