@@ -1,3 +1,7 @@
+## v6.0.0 (TBD)
+(Passwordless/Social PRs that will be unified when merging to develop)
+- Add a "Back" button for Standard Login https://github.com/SalesforceCommerceCloud/pwa-kit/pull/2208
+
 ## v5.1.0-dev (TBD)
 
 - [BUG] Fixed "getCheckboxProps is not a function" when rendering checkout page in generated app.[#2140](https://github.com/SalesforceCommerceCloud/pwa-kit/pull/2140)
