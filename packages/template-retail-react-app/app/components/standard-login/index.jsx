@@ -69,6 +69,7 @@ StandardLogin.propTypes = {
     handleForgotPasswordClick: PropTypes.func,
     hideEmail: PropTypes.bool,
     isSocialEnabled: PropTypes.bool,
+    setShowPasswordView: PropTypes.func,
     idps: PropTypes.arrayOf(PropTypes.string)
 }
 
