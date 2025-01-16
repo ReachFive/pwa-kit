@@ -51,7 +51,7 @@ jest.mock('@salesforce/commerce-sdk-react', () => {
     const originalModule = jest.requireActual('@salesforce/commerce-sdk-react')
     return {
         ...originalModule,
-        useDNT: () => ({selectedDoNotTrackValue: undefined, updateDNT: mockUpdateDNT})
+        useDNT: () => ({selectedDnt: undefined, updateDNT: mockUpdateDNT})
     }
 })
 
