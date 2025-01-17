@@ -26,7 +26,6 @@ describe('StandardLogin component', () => {
         expect(screen.getByLabelText('Email')).toBeInTheDocument()
         expect(screen.queryByLabelText('Password')).toBeInTheDocument()
         expect(screen.getByRole('button', {name: 'Sign In'})).toBeInTheDocument()
-        expect(screen.getByRole('button', {name: 'Back to Sign In Options'})).toBeInTheDocument()
     })
 
     test('renders properly when hideEmail is true', async () => {
@@ -34,6 +33,7 @@ describe('StandardLogin component', () => {
 
         expect(screen.queryByLabelText('Email')).not.toBeInTheDocument()
         expect(screen.getByLabelText('Password')).toBeInTheDocument()
+        expect(screen.getByRole('button', {name: 'Back to Sign In Options'})).toBeInTheDocument()
     })
 
     test('renders social login buttons', async () => {
