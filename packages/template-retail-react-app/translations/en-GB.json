@@ -954,6 +954,9 @@
   "login_form.button.apple": {
     "defaultMessage": "Apple"
   },
+  "login_form.button.back": {
+    "defaultMessage": "Back"
+  },
   "login_form.button.continue_securely": {
     "defaultMessage": "Continue Securely"
   },
