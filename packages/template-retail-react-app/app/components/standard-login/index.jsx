@@ -58,7 +58,10 @@ const StandardLogin = ({
                         color="blue.600"
                         variant="outline"
                     >
-                        <FormattedMessage defaultMessage="Back to Sign In Options" id="login_form.button.back" />
+                        <FormattedMessage
+                            defaultMessage="Back to Sign In Options"
+                            id="login_form.button.back"
+                        />
                     </Button>
                 )}
             </Stack>
