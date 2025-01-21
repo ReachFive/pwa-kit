@@ -29,7 +29,7 @@ const StandardLogin = ({
                     handleForgotPasswordClick={handleForgotPasswordClick}
                 />
             </Stack>
-            <Stack spacing={6}>
+            <Stack spacing={4}>
                 <Button
                     type="submit"
                     onClick={() => {
@@ -39,9 +39,9 @@ const StandardLogin = ({
                 >
                     <FormattedMessage defaultMessage="Sign In" id="login_form.button.sign_in" />
                 </Button>
-                <Stack spacing={4}>
-                    {isSocialEnabled && idps.length > 0 && (
-                        <>
+                {isSocialEnabled && idps.length > 0 && (
+                    <>
+                        <Stack spacing={6}>
                             <Divider />
                             <Text align="center" fontSize="sm">
                                 <FormattedMessage
@@ -49,10 +49,10 @@ const StandardLogin = ({
                                     id="login_form.message.or_login_with"
                                 />
                             </Text>
-                            <SocialLogin form={form} idps={idps} />
-                        </>
-                    )}
-                </Stack>
+                        </Stack>
+                        <SocialLogin form={form} idps={idps} />
+                    </>
+                )}
                 {hideEmail && (
                     <Button
                         onClick={() => setShowPasswordView(false)}
