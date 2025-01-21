@@ -41,7 +41,7 @@ const StandardLogin = ({
                 </Button>
                 {isSocialEnabled && idps.length > 0 && (
                     <>
-                        <Stack spacing={6}>
+                        <Stack spacing={6} paddingTop={2} paddingBottom={2}>
                             <Divider />
                             <Text align="center" fontSize="sm">
                                 <FormattedMessage
