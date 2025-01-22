@@ -45,10 +45,10 @@ import {usePasswordReset} from '@salesforce/retail-react-app/app/hooks/use-passw
 import {isServer} from '@salesforce/retail-react-app/app/utils/utils'
 import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
 
-const LOGIN_VIEW = 'login'
-const REGISTER_VIEW = 'register'
-const PASSWORD_VIEW = 'password'
-const EMAIL_VIEW = 'email'
+export const LOGIN_VIEW = 'login'
+export const REGISTER_VIEW = 'register'
+export const PASSWORD_VIEW = 'password'
+export const EMAIL_VIEW = 'email'
 
 const LOGIN_ERROR = defineMessage({
     defaultMessage: "Something's not right with your email or password. Try again.",
@@ -57,6 +57,7 @@ const LOGIN_ERROR = defineMessage({
 
 export const AuthModal = ({
     initialView = LOGIN_VIEW,
+    initialEmail = '',
     onLoginSuccess = noop,
     onRegistrationSuccess = noop,
     isOpen,
@@ -85,7 +86,7 @@ export const AuthModal = ({
     const register = useAuthHelper(AuthHelpers.Register)
 
     const [loginType, setLoginType] = useState(LOGIN_TYPES.PASSWORD)
-    const [passwordlessLoginEmail, setPasswordlessLoginEmail] = useState('')
+    const [passwordlessLoginEmail, setPasswordlessLoginEmail] = useState(initialEmail)
     const {getPasswordResetToken} = usePasswordReset()
     const authorizePasswordlessLogin = useAuthHelper(AuthHelpers.AuthorizePasswordless)
 
@@ -217,6 +218,10 @@ export const AuthModal = ({
     }, [currentView])
 
     useEffect(() => {
+        setPasswordlessLoginEmail(initialEmail)
+    }, [initialEmail])
+
+    useEffect(() => {
         // Lets determine if the user has either logged in, or registed.
         const loggingIn = currentView === LOGIN_VIEW
         const registering = currentView === REGISTER_VIEW
@@ -327,6 +332,7 @@ export const AuthModal = ({
 
 AuthModal.propTypes = {
     initialView: PropTypes.oneOf([LOGIN_VIEW, REGISTER_VIEW, PASSWORD_VIEW, EMAIL_VIEW]),
+    initialEmail: PropTypes.string,
     isOpen: PropTypes.bool.isRequired,
     onOpen: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
