@@ -82,7 +82,7 @@ export const DntNotification = ({isOpen, onOpen, onClose}) => {
     const description = (
         <Text color={'gray.700'} fontWeight={500} marginTop={7}>
             <FormattedMessage
-                defaultMessage='This form is for demonstration purposes only. By clicking "Accept," you consent to our use of cookies and similar tracking technologies to enhance site functionality, personalize content, and analyze site usage. These technologies may collect data such as your device information, browsing behavior, and preferences to provide a better, more customized experience. '
+                defaultMessage="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
                 id="dnt_notification.description"
             />
         </Text>
