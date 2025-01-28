@@ -17,7 +17,7 @@ const options = {
     defaultCacheTimeSeconds: 600,
 
     // The port that the local dev server listens on
-    port: 4000,
+    port: 3000,
 
     // The protocol on which the development Express app listens.
     // Note that http://localhost is treated as a secure context for development,
