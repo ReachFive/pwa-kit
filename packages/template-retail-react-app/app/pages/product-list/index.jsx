@@ -105,7 +105,6 @@ const REFINEMENT_DISALLOW_LIST = ['c_isNew']
  * allowable filters and sort refinements.
  */
 const ProductList = (props) => {
-    console.log("(JEREMY) in ProductList")
     // Using destructuring to omit properties; we must rename `isLoading` because we use a different
     // `isLoading` later in this function.
     // eslint-disable-next-line react/prop-types, @typescript-eslint/no-unused-vars
@@ -399,8 +398,6 @@ const ProductList = (props) => {
             }
         }
     }, [productSearchResult])
-
-    console.log("(JEREMY) productSearchResult: ", productSearchResult)
 
     return (
         <Box
