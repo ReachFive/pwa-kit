@@ -2,7 +2,16 @@ const { expect } = require("@playwright/test");
 const config = require("../config");
 const { getCreditCardExpiry } = require("../scripts/utils.js")
 
-export const answerConsentTrackingForm = async (page, dnt = true)  => {
+/**
+ * Give an answer to the consent tracking form.
+ * 
+ * Note: the consent tracking form hovers over some elements in the app. This can cause a test to fail.
+ * Run this function after a page.goto to release the form from view.
+ * 
+ * @param {Object} page - Object that represents a tab/window in the browser provided by playwright
+ * @param {Boolean} dnt - Do Not Track value to answer the form. False to enable tracking, True to disable tracking.
+ */
+export const answerConsentTrackingForm = async (page, dnt = false)  => {
     if (await page.locator('text=Tracking Consent').count() > 0) {
         var text = 'Accept'
         if (dnt)
