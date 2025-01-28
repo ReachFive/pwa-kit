@@ -24,7 +24,7 @@ const checkDntCookie = async (page, expectedValue) => {
   expect(cookie.value).toBe(expectedValue);
 }
 
-test("Shopper can use the consent tracking form", async ({page}) => {
+test("Shopper can use the consent tracking form", async ({ page }) => {
   await page.context().clearCookies();
 
   await page.goto(config.RETAIL_APP_HOME);
@@ -45,7 +45,6 @@ test("Shopper can use the consent tracking form", async ({page}) => {
     route.continue();
   });
   
-  // The value of 1 comes from defaultDnt prop in _app-config/index.jsx
   await checkDntCookie(page, '1')
 
   // Trigger einstein events
