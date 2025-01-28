@@ -255,7 +255,6 @@ export const loginShopper = async ({page, userCredentials}) => {
         await page.goto(config.RETAIL_APP_HOME + "/login");
         await answerConsentTrackingForm(page)
 
-        // await answerConsentTrackingForm(page)
         await page.locator("input#email").fill(userCredentials.email);
         await page
             .locator("input#password")

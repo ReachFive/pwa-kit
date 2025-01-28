@@ -37,7 +37,6 @@ test("Shopper can use the consent tracking form", async ({page}) => {
   const declineButton = page.locator('button:visible', { hasText: 'Decline' });
   await expect(declineButton).toBeVisible();
   await declineButton.click();
-  await page.waitForTimeout(5000);
   
   // Intercept einstein request
   let apiCallsMade = false;
