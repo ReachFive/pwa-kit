@@ -146,7 +146,7 @@ test("Registered shopper can add item to wishlist", async ({ page }) => {
     page,
     userCredentials: REGISTERED_USER_CREDENTIALS
   })
-
+  // console.log("(JEREMY) isLoggedIn: ", isLoggedIn)
   if(!isLoggedIn) {
     await registerShopper({page, userCredentials: REGISTERED_USER_CREDENTIALS})
   }

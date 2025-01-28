@@ -336,8 +336,11 @@ class Auth {
         if (accessToken) {
             const {dnt} = this.parseSlasJWT(accessToken)
             isInSync = dnt === dntCookieVal
+            console.log("(JEREMY) dnt from token: ", dnt)
+            console.log("(JEREMY) dnt from cookie: ", dntCookieVal)
         }
         if ((dntCookieVal !== '1' && dntCookieVal !== '0') || !isInSync) {
+            console.log("(JEREMY) is not in sync. deleting cookie")
             this.delete(DNT_COOKIE_NAME)
         } else {
             dntCookieStatus = Boolean(Number(dntCookieVal))

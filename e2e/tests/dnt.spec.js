@@ -51,7 +51,7 @@ const checkDntCookie = async (page, expectedValue) => {
 
 
 test("Shopper can use the consent tracking form", async ({ page }) => {
-  await page.context().clearCookies();
+  // await page.context().clearCookies();
   await page.goto(config.RETAIL_APP_HOME);
 
   const modalSelector = '[aria-label="Close consent tracking form"]'
@@ -77,6 +77,8 @@ test("Shopper can use the consent tracking form", async ({ page }) => {
   await page.click('text=Womens');
   // Reloading the page after setting DNT makes the form not appear again
   await page.reload()
+  checkDntCookie(page, '1')
+  console.log("(JEREMY) dnt cookie is 1")
   await expect(page.getByText(/Tracking Consent/i)).toBeHidden();
   
   // Registering after setting DNT persists the preference

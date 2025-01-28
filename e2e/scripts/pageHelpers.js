@@ -2,6 +2,17 @@ const { expect } = require("@playwright/test");
 const config = require("../config");
 const { getCreditCardExpiry } = require("../scripts/utils.js")
 
+export const answerConsentTrackingForm = async (page, dnt = true)  => {
+    if (await page.locator('text=Tracking Consent').count() > 0) {
+        var text = 'Accept'
+        if (dnt)
+            text = 'Decline'
+        const answerButton = page.locator('button:visible', { hasText: text });
+        await expect(answerButton).toBeVisible();
+        await answerButton.click();
+    }
+}
+
 /**
  * Navigates to the `Cotton Turtleneck Sweater` PDP (Product Detail Page) on mobile 
  * with the black variant selected
@@ -11,6 +22,7 @@ const { getCreditCardExpiry } = require("../scripts/utils.js")
 export const navigateToPDPMobile = async ({page}) => {
     // Home page
     await page.goto(config.RETAIL_APP_HOME);
+    await answerConsentTrackingForm(page)
 
     await page.getByLabel("Menu", { exact: true }).click();
 
@@ -64,6 +76,7 @@ export const navigateToPDPMobile = async ({page}) => {
  */
 export const navigateToPDPDesktop = async ({page}) => {
     await page.goto(config.RETAIL_APP_HOME);
+    await answerConsentTrackingForm(page)
 
     await page.getByRole("link", { name: "Womens" }).hover();
     const topsNav = await page.getByRole("link", { name: "Tops", exact: true });
@@ -144,6 +157,7 @@ export const addProductToCart = async ({page, isMobile = false}) => {
 export const registerShopper = async ({page, userCredentials, isMobile = false}) => {
     // Create Account and Sign In
     await page.goto(config.RETAIL_APP_HOME + "/registration");
+    await answerConsentTrackingForm(page)
 
     await page.waitForLoadState();
 
@@ -186,6 +200,8 @@ export const registerShopper = async ({page, userCredentials, isMobile = false})
  */
 export const validateOrderHistory = async ({page}) => {
     await page.goto(config.RETAIL_APP_HOME + "/account/orders");
+    await answerConsentTrackingForm(page)
+
     await expect(
       page.getByRole("heading", { name: /Order History/i })
     ).toBeVisible();
@@ -209,6 +225,7 @@ export const validateOrderHistory = async ({page}) => {
  */
 export const validateWishlist = async ({page}) => {
     await page.goto(config.RETAIL_APP_HOME + "/account/wishlist");
+    await answerConsentTrackingForm(page)
 
     await expect(
       page.getByRole("heading", { name: /Wishlist/i })
@@ -236,6 +253,9 @@ export const validateWishlist = async ({page}) => {
 export const loginShopper = async ({page, userCredentials}) => {
     try {
         await page.goto(config.RETAIL_APP_HOME + "/login");
+        await answerConsentTrackingForm(page)
+
+        // await answerConsentTrackingForm(page)
         await page.locator("input#email").fill(userCredentials.email);
         await page
             .locator("input#password")
@@ -263,7 +283,7 @@ export const loginShopper = async ({page, userCredentials}) => {
  */
 export const searchProduct = async ({page, query, isMobile = false}) => {
     await page.goto(config.RETAIL_APP_HOME);
-
+    await answerConsentTrackingForm(page)
     // For accessibility reasons, we have two search bars
     // one for desktop and one for mobile depending on your device type
     const searchInputs = page.locator('input[aria-label="Search for products..."]');
