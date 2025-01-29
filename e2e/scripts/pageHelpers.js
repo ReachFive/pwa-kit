@@ -184,9 +184,10 @@ export const registerShopper = async ({page, userCredentials, isMobile = false})
         .locator("input#password")
         .fill(userCredentials.password);
 
+    const tokenResponsePromise=page.waitForResponse('**/shopper/auth/v1/organizations/**/oauth2/token')
     await page.getByRole("button", { name: /Create Account/i }).click();
-
-    await page.waitForLoadState();
+    await tokenResponsePromise;
+    expect((await tokenResponsePromise).status()).toBe(200);
 
     await expect(
         page.getByRole("heading", { name: /Account Details/i })
@@ -268,15 +269,11 @@ export const loginShopper = async ({page, userCredentials}) => {
         await page
             .locator("input#password")
             .fill(userCredentials.password);
+
+        const tokenResponsePromise=page.waitForResponse('**/shopper/auth/v1/organizations/**/oauth2/token')
         await page.getByRole("button", { name: /Sign In/i }).click();
-    
-        await page.waitForLoadState();
-    
-        // redirected to Account Details page after logging in
-        await expect(
-          page.getByRole("heading", { name: /Account Details/i })
-        ).toBeVisible({ timeout: 2000 });
-        return true;
+        await tokenResponsePromise;
+        return await tokenResponsePromise.status() === 200;
     } catch {
         return false;
     }
