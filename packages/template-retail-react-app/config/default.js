@@ -15,19 +15,19 @@ module.exports = {
             showDefaults: true,
             interpretPlusSignAsSpace: false
         },
-        defaultSite: 'RefArch',
-        // siteAliases: {
-        //     RefArch: 'us',
-        //     RefArchGlobal: 'global'
-        // },
+        defaultSite: 'RefArchGlobal',
+        siteAliases: {
+            RefArch: 'us',
+            RefArchGlobal: 'global'
+        },
         sites,
         commerceAPI: {
             proxyPath: `/mobify/proxy/api`,
             parameters: {
-                clientId: '987fc116-d30c-4537-93cb-c2bd433c3b5a',
-                organizationId: 'f_ecom_zzrf_002',
-                shortCode: 'kv7kzm78',
-                siteId: 'RefArch'
+                clientId: 'c9c45bfd-0ed3-4aa2-9971-40f88962b836',
+                organizationId: 'f_ecom_zzrf_001',
+                shortCode: '8o7m175y',
+                siteId: 'RefArchGlobal'
             }
         },
         einsteinAPI: {
@@ -53,11 +53,11 @@ module.exports = {
         ssrFunctionNodeVersion: '20.x',
         proxyConfigs: [
             {
-                host: 'kv7kzm78.api.commercecloud.salesforce.com',
+                host: '8o7m175y.api.commercecloud.salesforce.com',
                 path: 'api'
             },
             {
-                host: 'zzrf-002.dx.commercecloud.salesforce.com',
+                host: 'zzrf-001.dx.commercecloud.salesforce.com',
                 path: 'ocapi'
             }
         ]
