@@ -148,7 +148,7 @@ test("Registered shopper can add item to wishlist", async ({ page }) => {
   })
 
   if(!isLoggedIn) {
-    await registerShopper({page, userCredentials: generateUserCredentials()})
+    await registerShopper({page, userCredentials: generateUserCredentials() })
   }
 
   // Navigate to PDP
