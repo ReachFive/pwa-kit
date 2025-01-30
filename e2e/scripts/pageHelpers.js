@@ -183,7 +183,9 @@ export const registerShopper = async ({page, userCredentials, isMobile = false})
     await page
         .locator("input#password")
         .fill(userCredentials.password);
-
+    
+    // Best Practice: await the network call and assert on the network response rather than waiting for pageLoadState()
+    // to avoid race conditions from lock in pageLoadState being released before network call resolves
     const tokenResponsePromise=page.waitForResponse('**/shopper/auth/v1/organizations/**/oauth2/token')
     await page.getByRole("button", { name: /Create Account/i }).click();
     await tokenResponsePromise;
