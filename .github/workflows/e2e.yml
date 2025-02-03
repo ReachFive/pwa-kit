@@ -43,6 +43,14 @@ jobs:
           # Install node dependencies
           node ./scripts/gtime.js monorepo_install npm ci
 
+      - name: Check Playwright Versions
+        run: |-
+          # Check the installed version of playwright
+          echo "Playwright version: $(npm list playwright --depth=0)"
+          
+          # Check the installed version of @playwright/test
+          echo "@playwright/test version: $(npm list @playwright/test --depth=0)"
+
       - name: Generate Retail App Demo
         uses: ./.github/actions/e2e_generate_app
         with:
@@ -90,6 +98,14 @@ jobs:
         run: |-
           # Install node dependencies
           node ./scripts/gtime.js monorepo_install npm ci
+
+      - name: Check Playwright Versions
+        run: |-
+          # Check the installed version of playwright
+          echo "Playwright version: $(npm list playwright --depth=0)"
+          
+          # Check the installed version of @playwright/test
+          echo "@playwright/test version: $(npm list @playwright/test --depth=0)"
 
       - name: Generate Retail App Without Extensibility
         uses: ./.github/actions/e2e_generate_app
@@ -189,6 +205,14 @@ jobs:
           # Install node dependencies
           node ./scripts/gtime.js monorepo_install npm ci
 
+      - name: Check Playwright Versions
+        run: |-
+          # Check the installed version of playwright
+          echo "Playwright version: $(npm list playwright --depth=0)"
+          
+          # Check the installed version of @playwright/test
+          echo "@playwright/test version: $(npm list @playwright/test --depth=0)"
+
       - name: Generate Retail App With Extensibility
         uses: ./.github/actions/e2e_generate_app
         with:
@@ -283,6 +307,14 @@ jobs:
         run: |-
           # Install node dependencies
           node ./scripts/gtime.js monorepo_install npm ci
+
+      - name: Check Playwright Versions
+        run: |-
+          # Check the installed version of playwright
+          echo "Playwright version: $(npm list playwright --depth=0)"
+          
+          # Check the installed version of @playwright/test
+          echo "@playwright/test version: $(npm list @playwright/test --depth=0)"
 
       - name: Generate Retail App Private Client
         uses: ./.github/actions/e2e_generate_app
