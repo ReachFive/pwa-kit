@@ -44,6 +44,7 @@ test("Shopper can use the consent tracking form", async ({ page }) => {
     apiCallsMade = true;
     route.continue();
   });
+  
   await page.waitForTimeout(5000);
   await checkDntCookie(page, '1')
 
