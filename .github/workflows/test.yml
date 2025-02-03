@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Changelog Check
         uses: ./.github/actions/changelog-check
@@ -151,7 +151,7 @@ jobs:
       # For more: https://nodejs.org/en/download/releases/
       # (We also use this env var for making sure a step runs once for the current node version)
       # Note: For node 18, the default was npm 9 until v18.19.0, when it became npm 10
-      IS_DEFAULT_NPM: ${{ (matrix.node == 16 && matrix.npm == 8) || (matrix.node == 18 && matrix.npm == 10) || (matrix.node == 20 && matrix.npm == 10) || (matrix.node == 22 && matrix.npm == 10) }}
+      IS_DEFAULT_NPM: ${{ (matrix.node == 18 && matrix.npm == 10) || (matrix.node == 20 && matrix.npm == 10) || (matrix.node == 22 && matrix.npm == 10) }}
       # The current recommended version for Managed Runtime:
       # https://developer.salesforce.com/docs/commerce/pwa-kit-managed-runtime/guide/upgrade-node-version.html
       IS_MRT_NODE: ${{ matrix.node == 22 && matrix.npm == 10 }}
@@ -190,10 +190,10 @@ jobs:
       PROJECT_DIR: generated-${{ matrix.template }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 22
 
