@@ -75,6 +75,7 @@ const Login = ({initialView = LOGIN_VIEW}) => {
     const [currentView, setCurrentView] = useState(initialView)
     const [passwordlessLoginEmail, setPasswordlessLoginEmail] = useState('')
     const [loginType, setLoginType] = useState(LOGIN_TYPES.PASSWORD)
+    const [redirectPath, setRedirectPath] = useState('')
 
     const handleMergeBasket = () => {
         const hasBasketItem = baskets?.baskets?.[0]?.productItems?.length > 0
@@ -149,7 +150,12 @@ const Login = ({initialView = LOGIN_VIEW}) => {
     // customer baskets to be loaded to guarantee proper basket merging.
     useEffect(() => {
         if (path === PASSWORDLESS_LOGIN_LANDING_PATH && isSuccessCustomerBaskets) {
-            const token = queryParams.get('token')
+            const token = decodeURIComponent(queryParams.get('token'))
+            if (queryParams.get('redirect_url')) {
+                setRedirectPath(decodeURIComponent(queryParams.get('redirect_url')))
+            } else {
+                setRedirectPath('')
+            }
 
             const passwordlessLogin = async () => {
                 try {
@@ -170,13 +176,10 @@ const Login = ({initialView = LOGIN_VIEW}) => {
     useEffect(() => {
         if (isRegistered) {
             handleMergeBasket()
-            if (location?.state?.directedFrom) {
-                navigate(location.state.directedFrom)
-            } else {
-                navigate('/account')
-            }
+            const redirectTo = redirectPath ? redirectPath : '/account'
+            navigate(redirectTo)
         }
-    }, [isRegistered])
+    }, [isRegistered, redirectPath])
 
     /**************** Einstein ****************/
     useEffect(() => {

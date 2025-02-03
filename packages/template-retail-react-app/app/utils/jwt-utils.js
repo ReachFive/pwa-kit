@@ -26,7 +26,9 @@ export const createRemoteJWKSet = (tenantId) => {
     const shortCode = appConfig.commerceAPI.parameters.shortCode
     const configTenantId = appConfig.commerceAPI.parameters.organizationId.replace(/^f_ecom_/, '')
     if (tenantId !== configTenantId) {
-        throw new Error(`The tenant ID in your PWA Kit configuration ("${configTenantId}") does not match the tenant ID in the SLAS callback token ("${tenantId}").`)
+        throw new Error(
+            `The tenant ID in your PWA Kit configuration ("${configTenantId}") does not match the tenant ID in the SLAS callback token ("${tenantId}").`
+        )
     }
     const JWKS_URI = `${appOrigin}/${shortCode}/${tenantId}/oauth2/jwks`
     return joseCreateRemoteJWKSet(new URL(JWKS_URI))
@@ -77,7 +79,7 @@ export async function jwksCaching(req, res, options) {
 
         // JWKS rotate every 30 days. For now, cache response for 14 days so that
         // fetches only need to happen twice a month
-        res.set('Cache-Control', 'public, max-age=1209600')
+        res.set('Cache-Control', 'public, max-age=1209600, stale-while-revalidate=86400')
 
         return res.json(await response.json())
     } catch (error) {

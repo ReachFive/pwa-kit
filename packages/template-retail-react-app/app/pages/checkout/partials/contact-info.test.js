@@ -105,6 +105,7 @@ describe('passwordless and social disabled', () => {
 
 describe('passwordless enabled', () => {
     let currentBasket = JSON.parse(JSON.stringify(scapiBasketWithItem))
+
     beforeEach(() => {
         global.server.use(
             rest.put('*/baskets/:basketId/customer', (req, res, ctx) => {
@@ -147,6 +148,9 @@ describe('passwordless enabled', () => {
     })
 
     test('allows passwordless login', async () => {
+        jest.spyOn(window, 'location', 'get').mockReturnValue({
+            pathname: '/checkout'
+        })
         const {user} = renderWithProviders(<ContactInfo isPasswordlessEnabled={true} />)
 
         // enter a valid email address
@@ -159,7 +163,11 @@ describe('passwordless enabled', () => {
         await user.click(passwordlessLoginButton)
         expect(
             mockAuthHelperFunctions[AuthHelpers.AuthorizePasswordless].mutateAsync
-        ).toHaveBeenCalledWith({userid: validEmail})
+        ).toHaveBeenCalledWith({
+            userid: validEmail,
+            callbackURI:
+                'https://webhook.site/27761b71-50c1-4097-a600-21a3b89a546c?redirectUrl=/checkout'
+        })
 
         // check that check email modal is open
         await waitFor(() => {
@@ -172,7 +180,11 @@ describe('passwordless enabled', () => {
         user.click(screen.getByText(/Resend Link/i))
         expect(
             mockAuthHelperFunctions[AuthHelpers.AuthorizePasswordless].mutateAsync
-        ).toHaveBeenCalledWith({userid: validEmail})
+        ).toHaveBeenCalledWith({
+            userid: validEmail,
+            callbackURI:
+                'https://webhook.site/27761b71-50c1-4097-a600-21a3b89a546c?redirectUrl=/checkout'
+        })
     })
 
     test('allows login using password', async () => {

@@ -41,7 +41,10 @@ import {
 import useNavigation from '@salesforce/retail-react-app/app/hooks/use-navigation'
 import {useCurrentCustomer} from '@salesforce/retail-react-app/app/hooks/use-current-customer'
 import {useCurrentBasket} from '@salesforce/retail-react-app/app/hooks/use-current-basket'
+import {isAbsoluteURL} from '@salesforce/retail-react-app/app/page-designer/utils'
+import {useAppOrigin} from '@salesforce/retail-react-app/app/hooks/use-app-origin'
 import {AuthHelpers, useAuthHelper, useShopperBasketsMutation} from '@salesforce/commerce-sdk-react'
+import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
 import {
     API_ERROR_MESSAGE,
     FEATURE_UNAVAILABLE_ERROR_MESSAGE,
@@ -55,6 +58,7 @@ const ContactInfo = ({isSocialEnabled = false, isPasswordlessEnabled = false, id
     const navigate = useNavigation()
     const {data: customer} = useCurrentCustomer()
     const {data: basket} = useCurrentBasket()
+    const appOrigin = useAppOrigin()
     const login = useAuthHelper(AuthHelpers.LoginRegisteredUserB2C)
     const logout = useAuthHelper(AuthHelpers.Logout)
     const authorizePasswordlessLogin = useAuthHelper(AuthHelpers.AuthorizePasswordless)
@@ -77,10 +81,18 @@ const ContactInfo = ({isSocialEnabled = false, isPasswordlessEnabled = false, id
     const [authModalView, setAuthModalView] = useState(PASSWORD_VIEW)
     const authModal = useAuthModal(authModalView)
     const [isPasswordlessLoginClicked, setIsPasswordlessLoginClicked] = useState(false)
+    const passwordlessConfigCallback = getConfig().app.login?.passwordless?.callbackURI
+    const callbackURL = isAbsoluteURL(passwordlessConfigCallback)
+        ? passwordlessConfigCallback
+        : `${appOrigin}${passwordlessConfigCallback}`
 
     const handlePasswordlessLogin = async (email) => {
         try {
-            await authorizePasswordlessLogin.mutateAsync({userid: email})
+            const redirectPath = window.location.pathname + window.location.search
+            await authorizePasswordlessLogin.mutateAsync({
+                userid: email,
+                callbackURI: `${callbackURL}?redirectUrl=${redirectPath}`
+            })
             setAuthModalView(EMAIL_VIEW)
             authModal.onOpen()
         } catch (error) {
