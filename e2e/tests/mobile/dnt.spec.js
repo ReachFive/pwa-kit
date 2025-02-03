@@ -69,6 +69,7 @@ test("Shopper can use the consent tracking form", async ({ page }) => {
   
   // Registering after setting DNT persists the preference
   await registerShopper({page, userCredentials: REGISTERED_USER_CREDENTIALS});
+  await page.waitForTimeout(5000);
   await checkDntCookie(page, '1')
   
   // Logging out clears the preference
