@@ -16,7 +16,7 @@ export const answerConsentTrackingForm = async (page, dnt = false)  => {
         var text = 'Accept'
         if (dnt)
             text = 'Decline'
-        const answerButton = page.locator('button:visible', { hasText: text });
+        const answerButton = await page.locator('button:visible', { hasText: text });
         await expect(answerButton).toBeVisible();
         await answerButton.click();
     }
