@@ -604,13 +604,15 @@ class Auth {
             responseValue,
             defaultValue
         )
-        const {uido} = this.parseSlasJWT(res.access_token)
+        if (res.access_token) {
+            const {uido} = this.parseSlasJWT(res.access_token)
+            this.set('uido', uido)
+        }
         const expiresDate = this.convertSecondsToDate(refreshTokenTTLValue)
         this.set('refresh_token_expires_in', refreshTokenTTLValue.toString())
         this.set(refreshTokenKey, res.refresh_token, {
             expires: expiresDate
         })
-        this.set('uido', uido)
     }
 
     async refreshAccessToken() {
@@ -1144,7 +1146,7 @@ class Auth {
                 mode
             }
         )
-        if (res.status !== 200) {
+        if (res && res.status !== 200) {
             const errorData = await res.json()
             throw new Error(`${res.status} ${errorData.message}`)
         }
