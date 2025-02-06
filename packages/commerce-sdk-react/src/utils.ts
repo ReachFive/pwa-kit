@@ -134,9 +134,9 @@ export function isAbsoluteUrl(url: string): boolean {
 /**
  * Provides a platform-specific method for Base64 encoding.
  *
- * - In a browser environment (where `window` and `document` are defined), 
+ * - In a browser environment (where `window` and `document` are defined),
  *   the native `btoa` function is used.
- * - In a non-browser environment (like Node.js), a fallback is provided 
+ * - In a non-browser environment (like Node.js), a fallback is provided
  *   that uses `Buffer` to perform the Base64 encoding.
  */
 export const stringToBase64 =
