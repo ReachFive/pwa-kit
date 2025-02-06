@@ -13,14 +13,19 @@ const {
   validateOrderHistory,
   validateWishlist,
   loginShopper,
-  navigateToPDPMobile
+  navigateToPDPMobile,
 } = require("../../scripts/pageHelpers");
 const {
   generateUserCredentials,
   getCreditCardExpiry,
 } = require("../../scripts/utils.js");
 
-const REGISTERED_USER_CREDENTIALS = generateUserCredentials();
+let REGISTERED_USER_CREDENTIALS = {};
+
+test.beforeAll(async () => {
+  // Generate credentials once and use throughout tests to avoid creating a new account
+  REGISTERED_USER_CREDENTIALS = generateUserCredentials();
+});
 
 /**
  * Test that registered shoppers can add a product to cart and go through the entire checkout process,
@@ -28,15 +33,27 @@ const REGISTERED_USER_CREDENTIALS = generateUserCredentials();
  * and that order shows up in order history
  */
 test("Registered shopper can checkout items", async ({ page }) => {
-  // Create Account and Sign In
-  await registerShopper({
+  // Since we're re-using the same account, we need to check if the user is already registered.
+  // This ensures the tests are independent and not dependent on the order they are run in.
+  const isLoggedIn = await loginShopper({
     page,
     userCredentials: REGISTERED_USER_CREDENTIALS,
-    isMobile: true
-  })
+  });
+
+  if (!isLoggedIn) {
+    await registerShopper({
+      page,
+      userCredentials: REGISTERED_USER_CREDENTIALS,
+      isMobile: true,
+    });
+  }
+
+  await expect(
+    page.getByRole("heading", { name: /Account Details/i })
+  ).toBeVisible();
 
   // Shop for items as registered user
-  await addProductToCart({page, isMobile: true})
+  await addProductToCart({ page, isMobile: true });
 
   // cart
   await page.getByLabel(/My cart/i).click();
@@ -138,7 +155,7 @@ test("Registered shopper can checkout items", async ({ page }) => {
   ).toBeVisible();
 
   // order history
-  await validateOrderHistory({page});
+  await validateOrderHistory({ page });
 });
 
 /**
@@ -147,27 +164,31 @@ test("Registered shopper can checkout items", async ({ page }) => {
 test("Registered shopper can add item to wishlist", async ({ page }) => {
   const isLoggedIn = await loginShopper({
     page,
-    userCredentials: REGISTERED_USER_CREDENTIALS
-  })
+    userCredentials: REGISTERED_USER_CREDENTIALS,
+  });
 
-  if(!isLoggedIn) {
+  if (!isLoggedIn) {
     await registerShopper({
       page,
-      userCredentials: generateUserCredentials(),
-      isMobile: true
-    })
+      userCredentials: REGISTERED_USER_CREDENTIALS,
+      isMobile: true,
+    });
   }
 
+  await expect(
+    page.getByRole("heading", { name: /Account Details/i })
+  ).toBeVisible();
+
   // PDP
-  await navigateToPDPMobile({page});
+  await navigateToPDPMobile({ page });
 
   // add product to wishlist
   await expect(
     page.getByRole("heading", { name: /Cotton Turtleneck Sweater/i })
   ).toBeVisible();
   await page.getByRole("radio", { name: "L", exact: true }).click();
-  await page.getByRole("button", { name: /Add to Wishlist/i }).click()
+  await page.getByRole("button", { name: /Add to Wishlist/i }).click();
 
   // wishlist
-  await validateWishlist({page})
+  await validateWishlist({ page });
 });

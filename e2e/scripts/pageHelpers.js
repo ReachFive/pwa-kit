@@ -272,10 +272,14 @@ export const loginShopper = async ({page, userCredentials}) => {
             .locator("input#password")
             .fill(userCredentials.password);
 
+        const loginResponsePromise=page.waitForResponse('**/shopper/auth/v1/organizations/**/oauth2/login')
         const tokenResponsePromise=page.waitForResponse('**/shopper/auth/v1/organizations/**/oauth2/token')
         await page.getByRole("button", { name: /Sign In/i }).click();
+        await loginResponsePromise;
+        expect((await loginResponsePromise).status()).toBe(303); // Login returns a 303 redirect to /callback with authCode and usid
         await tokenResponsePromise;
-        return await tokenResponsePromise.status() === 200;
+        expect((await tokenResponsePromise).status()).toBe(200);
+        return true;
     } catch {
         return false;
     }
