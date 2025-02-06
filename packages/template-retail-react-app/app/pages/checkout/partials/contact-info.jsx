@@ -88,7 +88,7 @@ const ContactInfo = ({isSocialEnabled = false, isPasswordlessEnabled = false, id
 
     const handlePasswordlessLogin = async (email) => {
         try {
-            const redirectPath = window.location.pathname + window.location.search
+            const redirectPath = window.location.pathname + (window.location.search || '')
             await authorizePasswordlessLogin.mutateAsync({
                 userid: email,
                 callbackURI: `${callbackURL}?redirectUrl=${redirectPath}`

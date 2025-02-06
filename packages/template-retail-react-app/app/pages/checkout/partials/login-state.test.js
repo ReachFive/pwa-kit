@@ -5,7 +5,7 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import React from 'react'
-import LoginState from '@salesforce/retail-react-app/../../app/pages/checkout/partials/login-state'
+import LoginState from '@salesforce/retail-react-app/app/pages/checkout/partials/login-state'
 import {renderWithProviders} from '@salesforce/retail-react-app/app/utils/test-utils'
 import {useForm} from 'react-hook-form'
 
