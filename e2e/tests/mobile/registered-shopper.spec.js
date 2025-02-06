@@ -20,11 +20,11 @@ const {
   getCreditCardExpiry,
 } = require("../../scripts/utils.js");
 
-let REGISTERED_USER_CREDENTIALS = {};
+let registeredUserCredentials = {};
 
 test.beforeAll(async () => {
   // Generate credentials once and use throughout tests to avoid creating a new account
-  REGISTERED_USER_CREDENTIALS = generateUserCredentials();
+  registeredUserCredentials = generateUserCredentials();
 });
 
 /**
@@ -32,18 +32,18 @@ test.beforeAll(async () => {
  * validating that shopper is able to get to the order summary section,
  * and that order shows up in order history
  */
-test("Registered shopper can checkout items", async ({ page }) => {
+test("Registered shopper can checkout items", async ({page}) => {
   // Since we're re-using the same account, we need to check if the user is already registered.
   // This ensures the tests are independent and not dependent on the order they are run in.
   const isLoggedIn = await loginShopper({
     page,
-    userCredentials: REGISTERED_USER_CREDENTIALS,
+    userCredentials: registeredUserCredentials,
   });
 
   if (!isLoggedIn) {
     await registerShopper({
       page,
-      userCredentials: REGISTERED_USER_CREDENTIALS,
+      userCredentials: registeredUserCredentials,
       isMobile: true,
     });
   }
@@ -77,23 +77,23 @@ test("Registered shopper can checkout items", async ({ page }) => {
 
   await page
     .locator("input#firstName")
-    .fill(REGISTERED_USER_CREDENTIALS.firstName);
+    .fill(registeredUserCredentials.firstName);
   await page
     .locator("input#lastName")
-    .fill(REGISTERED_USER_CREDENTIALS.lastName);
-  await page.locator("input#phone").fill(REGISTERED_USER_CREDENTIALS.phone);
+    .fill(registeredUserCredentials.lastName);
+  await page.locator("input#phone").fill(registeredUserCredentials.phone);
   await page
     .locator("input#address1")
-    .fill(REGISTERED_USER_CREDENTIALS.address.street);
+    .fill(registeredUserCredentials.address.street);
   await page
     .locator("input#city")
-    .fill(REGISTERED_USER_CREDENTIALS.address.city);
+    .fill(registeredUserCredentials.address.city);
   await page
     .locator("select#stateCode")
-    .selectOption(REGISTERED_USER_CREDENTIALS.address.state);
+    .selectOption(registeredUserCredentials.address.state);
   await page
     .locator("input#postalCode")
-    .fill(REGISTERED_USER_CREDENTIALS.address.zipcode);
+    .fill(registeredUserCredentials.address.zipcode);
 
   await page
     .getByRole("button", { name: /Continue to Shipping Method/i })
@@ -164,13 +164,13 @@ test("Registered shopper can checkout items", async ({ page }) => {
 test("Registered shopper can add item to wishlist", async ({ page }) => {
   const isLoggedIn = await loginShopper({
     page,
-    userCredentials: REGISTERED_USER_CREDENTIALS,
+    userCredentials: registeredUserCredentials,
   });
 
   if (!isLoggedIn) {
     await registerShopper({
       page,
-      userCredentials: REGISTERED_USER_CREDENTIALS,
+      userCredentials: registeredUserCredentials,
       isMobile: true,
     });
   }
