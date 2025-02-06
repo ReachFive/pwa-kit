@@ -1085,6 +1085,8 @@ class Auth {
             const errorData = await response.json()
             throw new Error(errorData.message || 'API validation failed')
         }
+        // Await 1s before calling authorizeIDP again
+        await new Promise(resolve => setTimeout(resolve, 1000))
         if (onClient()) {
             window.location.assign(url)
         } else {
