@@ -3,6 +3,13 @@ const config = require("../config");
 const { getCreditCardExpiry } = require("../scripts/utils.js")
 
 /**
+ * Note: As a best practice, we should await the network call and assert on the network response rather than waiting for pageLoadState()    
+ * to avoid race conditions from lock in pageLoadState being released before network call resolves.
+ *  
+ * This is a best practice for tests that are dependent on the network call. Eg.: Shopper login, registration, etc.
+ */
+
+/**
  * Give an answer to the consent tracking form.
  * 
  * Note: the consent tracking form hovers over some elements in the app. This can cause a test to fail.
