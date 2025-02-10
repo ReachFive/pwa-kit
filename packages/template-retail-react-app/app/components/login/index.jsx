@@ -55,6 +55,7 @@ const LoginForm = ({
                         </Text>
                     </Alert>
                 )}
+                </form>
                 <Stack spacing={6}>
                     {isPasswordlessEnabled ? (
                         <PasswordlessLogin
@@ -90,22 +91,53 @@ const LoginForm = ({
                             </Text>
                         </Button>
 
-                    <Stack direction="row" spacing={1} justify="center">
-                        <Text fontSize="sm">
-                            <FormattedMessage
-                                defaultMessage="Don't have an account?"
-                                id="login_form.message.dont_have_account"
-                            />
-                        </Text>
-                        <Button variant="link" size="sm" onClick={clickCreateAccount}>
-                            <FormattedMessage
-                                defaultMessage="Create account"
-                                id="login_form.action.create_account"
-                            />
+                        <Button
+                            variant="outline"
+                            size="lg"
+                            leftIcon={<>R5-PWA</>}
+                            onClick={async () => {
+                                await idpAuth.loginRedirect('reach_five_slas')
+                            }}
+                        >
+                            <Text paddingLeft={4}>
+                                <FormattedMessage
+                                    defaultMessage="Continue with reach5"
+                                    id="login_form.button.continue_with_reach5"
+                                />
+                            </Text>
                         </Button>
+
+                        <Button
+                            variant="outline"
+                            size="lg"
+                            leftIcon={<>Google</>}
+                            onClick={async () => {
+                                await idpAuth.loginRedirect('google')
+                            }}
+                        >
+                            <Text paddingLeft={4}>
+                                <FormattedMessage
+                                    defaultMessage="Continue with reach5"
+                                    id="login_form.button.continue_with_reach5"
+                                />
+                            </Text>
+                        </Button>
+
+                        <Stack direction="row" spacing={1} justify="center">
+                            <Text fontSize="sm">
+                                <FormattedMessage
+                                    defaultMessage="Don't have an account?"
+                                    id="login_form.message.dont_have_account"
+                                />
+                            </Text>
+                            <Button variant="link" size="sm" onClick={clickCreateAccount}>
+                                <FormattedMessage
+                                    defaultMessage="Create account"
+                                    id="login_form.action.create_account"
+                                />
+                            </Button>
+                        </Stack>
                     </Stack>
-                </Stack>
-            </form>
         </Fragment>
     )
 }

@@ -22,9 +22,6 @@ jest.mock('@salesforce/retail-react-app/app/hooks/use-idp-callback')
 jest.mock('@salesforce/retail-react-app/app/hooks/use-current-customer')
 
 const MockedComponent = () => {
-    const match = {
-        params: {pageName: 'profile'}
-    }
     return (
         <Router>
             <IDPCallback />

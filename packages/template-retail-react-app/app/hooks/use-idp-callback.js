@@ -36,12 +36,15 @@ const useIdpCallback = ({labels}) => {
 
             return
         }
-
-        auth.loginIDPUser({
-            usid: params.usid,
-            code: params.code,
-            redirectURI: `${getAppOrigin()}${SLAS_CALLBACK_ENDPOINT}`
-        })
+        const getIdpToken = async () => {
+            const token = await auth.loginIDPUser({
+                usid: params.usid,
+                code: params.code,
+                redirectURI: `${getAppOrigin()}${SLAS_CALLBACK_ENDPOINT}`
+            })
+            return token
+        }
+        getIdpToken()
     }, [])
 
     return {authenticationError}
