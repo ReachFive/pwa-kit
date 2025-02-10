@@ -5,7 +5,7 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import {renderHook, act, waitFor} from '@testing-library/react'
+import {renderHook, waitFor} from '@testing-library/react'
 import useIdpCallback from '@salesforce/retail-react-app/app/hooks/use-idp-callback'
 import useAuthContext from '@salesforce/commerce-sdk-react/hooks/useAuthContext'
 import {useSearchParams} from '@salesforce/retail-react-app/app/hooks/use-search-params'

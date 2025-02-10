@@ -11,11 +11,11 @@ import {
     ShopperLoginTypes,
     ShopperCustomersTypes
 } from 'commerce-sdk-isomorphic'
-import { jwtDecode, JwtPayload } from 'jwt-decode'
-import { ApiClientConfigParams, Prettify, RemoveStringIndex } from '../hooks/types'
-import { BaseStorage, LocalStorage, CookieStorage, MemoryStorage, StorageType } from './storage'
-import { CustomerType } from '../hooks/useCustomerType'
-import { getParentOrigin, isOriginTrusted, onClient, getDefaultCookieAttributes } from '../utils'
+import {jwtDecode, JwtPayload} from 'jwt-decode'
+import {ApiClientConfigParams, Prettify, RemoveStringIndex} from '../hooks/types'
+import {BaseStorage, LocalStorage, CookieStorage, MemoryStorage, StorageType} from './storage'
+import {CustomerType} from '../hooks/useCustomerType'
+import {getParentOrigin, isOriginTrusted, onClient, getDefaultCookieAttributes} from '../utils'
 import {
     MOBIFY_PATH,
     SLAS_PRIVATE_PROXY_PATH,
@@ -27,7 +27,7 @@ import {
     SLAS_REFRESH_TOKEN_COOKIE_TTL_OVERRIDE_MSG
 } from '../constant'
 
-import { Logger } from '../types'
+import {Logger} from '../types'
 
 type TokenResponse = ShopperLoginTypes.TokenResponse
 type TrustedAgentTokenRequest = ShopperLoginTypes.TrustedAgentTokenRequest
@@ -277,31 +277,31 @@ class Auth {
         }
         this.clientSecret = config.enablePWAKitPrivateClient
             ? // PWA proxy is enabled, assume project is PWA and that the proxy will handle setting the secret
-            // We can pass any truthy value here to satisfy commerce-sdk-isomorphic requirements
-            SLAS_SECRET_PLACEHOLDER
+              // We can pass any truthy value here to satisfy commerce-sdk-isomorphic requirements
+              SLAS_SECRET_PLACEHOLDER
             : // We think there are users of Commerce SDK React and Commerce SDK isomorphic outside of PWA
-            // For these users to use a private client, they must have some way to set a client secret
-            // PWA users should not need to touch this.
-            config.clientSecret || ''
+              // For these users to use a private client, they must have some way to set a client secret
+              // PWA users should not need to touch this.
+              config.clientSecret || ''
 
         this.silenceWarnings = config.silenceWarnings || false
     }
 
     get(name: AuthDataKeys) {
-        const { key, storageType } = DATA_MAP[name]
+        const {key, storageType} = DATA_MAP[name]
         const storage = this.stores[storageType]
         return storage.get(key)
     }
 
     private set(name: AuthDataKeys, value: string, options?: unknown) {
-        const { key, storageType } = DATA_MAP[name]
+        const {key, storageType} = DATA_MAP[name]
         const storage = this.stores[storageType]
         storage.set(key, value, options)
         DATA_MAP[name].callback?.(storage)
     }
 
     private delete(name: AuthDataKeys) {
-        const { key, storageType } = DATA_MAP[name]
+        const {key, storageType} = DATA_MAP[name]
         const storage = this.stores[storageType]
         storage.delete(key)
     }
@@ -313,7 +313,7 @@ class Auth {
         const accessToken = this.getAccessToken()
         let isInSync = true
         if (accessToken) {
-            const { dnt } = this.parseSlasJWT(accessToken)
+            const {dnt} = this.parseSlasJWT(accessToken)
             isInSync = dnt === dntCookieVal
         }
         if ((dntCookieVal !== '1' && dntCookieVal !== '0') || !isInSync) {
@@ -337,7 +337,7 @@ class Auth {
         })
         const accessToken = this.getAccessToken()
         if (accessToken !== '') {
-            const { dnt } = this.parseSlasJWT(accessToken)
+            const {dnt} = this.parseSlasJWT(accessToken)
             if (dnt !== dntCookieVal) {
                 await this.refreshAccessToken()
             }
@@ -358,7 +358,7 @@ class Auth {
         // Type assertion because Object.keys is silly and limited :(
         const keys = Object.keys(DATA_MAP) as AuthDataKeys[]
         keys.forEach((keyName) => {
-            const { key, storageType } = DATA_MAP[keyName]
+            const {key, storageType} = DATA_MAP[keyName]
             const store = this.stores[storageType]
             store.delete(key)
         })
@@ -387,7 +387,7 @@ class Auth {
      * Used to validate JWT token expiration.
      */
     private isTokenExpired(token: string) {
-        const { exp, iat } = jwtDecode<JWTHeaders>(token.replace('Bearer ', ''))
+        const {exp, iat} = jwtDecode<JWTHeaders>(token.replace('Bearer ', ''))
         const validTimeSeconds = exp - iat - 60
         const tokenAgeSeconds = Date.now() / 1000 - iat
         return validTimeSeconds <= tokenAgeSeconds
@@ -438,7 +438,7 @@ class Auth {
                 this.clearSFRAAuthToken()
                 return ''
             }
-            const { isGuest, customerId, usid } = this.parseSlasJWT(sfraAuthToken)
+            const {isGuest, customerId, usid} = this.parseSlasJWT(sfraAuthToken)
             this.set('access_token', sfraAuthToken)
             this.set('customer_id', customerId)
             this.set('usid', usid)
@@ -464,7 +464,7 @@ class Auth {
      * with value from the cc-at cookie and is then used for all SCAPI requests made from PWA Kit. The cc-at cookie is then cleared.
      */
     private clearSFRAAuthToken() {
-        const { key, storageType } = DATA_MAP['access_token_sfra']
+        const {key, storageType} = DATA_MAP['access_token_sfra']
         const store = this.stores[storageType]
         store.delete(key)
     }
@@ -479,7 +479,7 @@ class Auth {
      * registered shopper refresh-token and restores session and basket on SFRA.
      */
     private clearECOMSession() {
-        const { key, storageType } = DATA_MAP[DWSID_COOKIE_NAME]
+        const {key, storageType} = DATA_MAP[DWSID_COOKIE_NAME]
         const store = this.stores[storageType]
         store.delete(key)
     }
@@ -565,7 +565,7 @@ class Auth {
                             this.client,
                             {
                                 refreshToken,
-                                ...(dntPref !== undefined && { dnt: dntPref })
+                                ...(dntPref !== undefined && {dnt: dntPref})
                             },
                             {
                                 clientSecret: this.clientSecret
@@ -592,7 +592,7 @@ class Auth {
         const accessToken = this.getAccessToken()
         if (accessToken && this.isTokenExpired(accessToken)) {
             try {
-                const { isGuest, usid, loginId, isAgent } = this.parseSlasJWT(accessToken)
+                const {isGuest, usid, loginId, isAgent} = this.parseSlasJWT(accessToken)
                 if (isAgent) {
                     return await this.queueRequest(
                         () => this.refreshTrustedAgent(loginId, usid),
@@ -692,7 +692,7 @@ class Auth {
      */
     async ready() {
         if (this.fetchedToken && this.fetchedToken !== '') {
-            const { isGuest, customerId, usid } = this.parseSlasJWT(this.fetchedToken)
+            const {isGuest, customerId, usid} = this.parseSlasJWT(this.fetchedToken)
             this.set('access_token', this.fetchedToken)
             this.set('customer_id', customerId)
             this.set('usid', usid)
@@ -739,17 +739,17 @@ class Auth {
         const guestPrivateArgs = [
             this.client,
             {
-                ...(dntPref !== undefined && { dnt: dntPref }),
-                ...(usid && { usid })
+                ...(dntPref !== undefined && {dnt: dntPref}),
+                ...(usid && {usid})
             },
-            { clientSecret: this.clientSecret }
+            {clientSecret: this.clientSecret}
         ] as const
         const guestPublicArgs = [
             this.client,
             {
                 redirectURI: this.redirectURI,
-                ...(dntPref !== undefined && { dnt: dntPref }),
-                ...(usid && { usid })
+                ...(dntPref !== undefined && {dnt: dntPref}),
+                ...(usid && {usid})
             }
         ] as const
         const callback = this.clientSecret
@@ -761,7 +761,7 @@ class Auth {
         } catch (error) {
             // We catch the error here to do logging but we still need to
             // throw an error to stop the login flow from continuing.
-            const { status_code, responseMessage } = await this.extractResponseError(error as Error)
+            const {status_code, responseMessage} = await this.extractResponseError(error as Error)
             this.logger.error(`${status_code} ${responseMessage}`)
             throw new Error(
                 `New guest user could not be logged in. ${status_code} ${responseMessage}`
@@ -772,7 +772,7 @@ class Auth {
     /**
      * A login method to handle the callback from an IDP.
      */
-    async loginIDPUser(body: { code: string; usid: string; redirectURI: string }) {
+    async loginIDPUser(body: {code: string; usid: string; redirectURI: string}) {
         return await this.queueRequest(() => {
             const tokenBody = {
                 code: body.code,
@@ -784,7 +784,7 @@ class Auth {
                 channel_id: this.client.clientConfig.parameters.siteId
             }
 
-            return this.client.getAccessToken({ body: tokenBody })
+            return this.client.getAccessToken({body: tokenBody})
         }, false)
     }
 
@@ -794,7 +794,7 @@ class Auth {
      */
     async register(body: ShopperCustomersTypes.CustomerRegistration) {
         const {
-            customer: { login },
+            customer: {login},
             password
         } = body
 
@@ -838,8 +838,8 @@ class Auth {
             },
             {
                 redirectURI,
-                ...(dntPref !== undefined && { dnt: dntPref }),
-                ...(usid && { usid })
+                ...(dntPref !== undefined && {dnt: dntPref}),
+                ...(usid && {usid})
             }
         )
         this.handleTokenResponse(token, isGuest)
@@ -854,7 +854,7 @@ class Auth {
      *
      * @warning This method is not supported on the server, it is a client-only method.
      */
-    async authorizeTrustedAgent(credentials: { loginId?: string }) {
+    async authorizeTrustedAgent(credentials: {loginId?: string}) {
         const slasClient = this.client
         const codeVerifier = helpers.createCodeVerifier()
         const codeChallenge = await helpers.generateCodeChallenge(codeVerifier)
@@ -865,20 +865,21 @@ class Auth {
         const isGuest = loginId === 'guest'
         const idpOrigin = isGuest ? 'slas' : 'ecom'
 
-        const url = `${slasClient.clientConfig.proxy || ''
-            }/shopper/auth/v1/organizations/${organizationId}/oauth2/trusted-agent/authorize?${[
-                ...[
-                    `client_id=${clientId}`,
-                    `channel_id=${siteId}`,
-                    `login_id=${loginId}`,
-                    `redirect_uri=${this.redirectURI}`,
-                    `idp_origin=${idpOrigin}`,
-                    `response_type=code`
-                ],
-                ...(!this.clientSecret ? [`code_challenge=${codeChallenge}`] : [])
-            ].join('&')}`
+        const url = `${
+            slasClient.clientConfig.proxy || ''
+        }/shopper/auth/v1/organizations/${organizationId}/oauth2/trusted-agent/authorize?${[
+            ...[
+                `client_id=${clientId}`,
+                `channel_id=${siteId}`,
+                `login_id=${loginId}`,
+                `redirect_uri=${this.redirectURI}`,
+                `idp_origin=${idpOrigin}`,
+                `response_type=code`
+            ],
+            ...(!this.clientSecret ? [`code_challenge=${codeChallenge}`] : [])
+        ].join('&')}`
 
-        return { url, codeVerifier }
+        return {url, codeVerifier}
     }
 
     /**
@@ -914,10 +915,10 @@ class Auth {
                     client_id: slasClient.clientConfig.parameters.clientId,
                     code_verifier: credentials.codeVerifier
                 }),
-                ...(credentials.state && { state: credentials.state }),
-                ...(credentials.usid && { usid: credentials.usid })
+                ...(credentials.state && {state: credentials.state}),
+                ...(credentials.usid && {usid: credentials.usid})
             }
-        } as { headers: { [key: string]: string }; body: TrustedAgentTokenRequest }
+        } as {headers: {[key: string]: string}; body: TrustedAgentTokenRequest}
 
         // using slas private client
         if (credentials.clientSecret) {
@@ -982,7 +983,7 @@ class Auth {
         shouldReloginCurrentSession?: boolean
     }) {
         const {
-            customer: { customerId, login },
+            customer: {customerId, login},
             password,
             currentPassword,
             shouldReloginCurrentSession
@@ -998,7 +999,7 @@ class Auth {
             headers: {
                 authorization: `Bearer ${this.get('access_token')}`
             },
-            parameters: { customerId },
+            parameters: {customerId},
             body: {
                 password: password,
                 currentPassword: currentPassword
@@ -1020,7 +1021,7 @@ class Auth {
      */
     parseSlasJWT(jwt: string) {
         const payload: SlasJwtPayload = jwtDecode(jwt)
-        const { sub, isb, dnt } = payload
+        const {sub, isb, dnt} = payload
 
         if (!sub || !isb) {
             throw new Error('Unable to parse access token payload: missing sub and isb.')

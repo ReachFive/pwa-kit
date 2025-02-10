@@ -6,9 +6,9 @@
  */
 
 import useIdpAuth from '@salesforce/retail-react-app/app/hooks/use-idp-auth'
-import React, { Fragment } from 'react'
+import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
-import { FormattedMessage } from 'react-intl'
+import {FormattedMessage} from 'react-intl'
 import {
     Alert,
     Box,
@@ -16,14 +16,11 @@ import {
     Stack,
     Text
 } from '@salesforce/retail-react-app/app/components/shared/ui'
-import {
-    AlertIcon,
-    BrandLogo
-} from '@salesforce/retail-react-app/app/components/icons'
+import {AlertIcon, BrandLogo} from '@salesforce/retail-react-app/app/components/icons'
 import LoginFields from '@salesforce/retail-react-app/app/components/forms/login-fields'
-import { noop } from '@salesforce/retail-react-app/app/utils/utils'
+import {noop} from '@salesforce/retail-react-app/app/utils/utils'
 
-const LoginForm = ({ submitForm, clickForgotPassword = noop, clickCreateAccount = noop, form }) => {
+const LoginForm = ({submitForm, clickForgotPassword = noop, clickCreateAccount = noop, form}) => {
     const idpAuth = useIdpAuth()
 
     return (
@@ -83,6 +80,38 @@ const LoginForm = ({ submitForm, clickForgotPassword = noop, clickCreateAccount 
                             leftIcon={<>R5</>}
                             onClick={async () => {
                                 await idpAuth.loginRedirect('reach_five')
+                            }}
+                        >
+                            <Text paddingLeft={4}>
+                                <FormattedMessage
+                                    defaultMessage="Continue with reach5"
+                                    id="login_form.button.continue_with_reach5"
+                                />
+                            </Text>
+                        </Button>
+
+                        <Button
+                            variant="outline"
+                            size="lg"
+                            leftIcon={<>R5-PWA</>}
+                            onClick={async () => {
+                                await idpAuth.loginRedirect('reach_five_slas')
+                            }}
+                        >
+                            <Text paddingLeft={4}>
+                                <FormattedMessage
+                                    defaultMessage="Continue with reach5"
+                                    id="login_form.button.continue_with_reach5"
+                                />
+                            </Text>
+                        </Button>
+
+                        <Button
+                            variant="outline"
+                            size="lg"
+                            leftIcon={<>Google</>}
+                            onClick={async () => {
+                                await idpAuth.loginRedirect('google')
                             }}
                         >
                             <Text paddingLeft={4}>

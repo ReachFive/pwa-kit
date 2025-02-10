@@ -14,29 +14,29 @@
 
 import React from 'react'
 import loadable from '@loadable/component'
-import { getConfig } from '@salesforce/pwa-kit-runtime/utils/ssr-config'
+import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
 
 // Components
-import { Skeleton } from '@salesforce/retail-react-app/app/components/shared/ui'
-import { configureRoutes } from '@salesforce/retail-react-app/app/utils/routes-utils'
+import {Skeleton} from '@salesforce/retail-react-app/app/components/shared/ui'
+import {configureRoutes} from '@salesforce/retail-react-app/app/utils/routes-utils'
 
 const fallback = <Skeleton height="75vh" width="100%" />
 
 // Pages
-const Home = loadable(() => import('./pages/home'), { fallback })
-const Login = loadable(() => import('./pages/login'), { fallback })
+const Home = loadable(() => import('./pages/home'), {fallback})
+const Login = loadable(() => import('./pages/login'), {fallback})
 const Registration = loadable(() => import('./pages/registration'), {
     fallback
 })
-const ResetPassword = loadable(() => import('./pages/reset-password'), { fallback })
-const Account = loadable(() => import('./pages/account'), { fallback })
-const Cart = loadable(() => import('./pages/cart'), { fallback })
+const ResetPassword = loadable(() => import('./pages/reset-password'), {fallback})
+const Account = loadable(() => import('./pages/account'), {fallback})
+const Cart = loadable(() => import('./pages/cart'), {fallback})
 const Checkout = loadable(() => import('./pages/checkout'), {
     fallback
 })
-const CheckoutConfirmation = loadable(() => import('./pages/checkout/confirmation'), { fallback })
-const LoginRedirect = loadable(() => import('./pages/login-redirect'), { fallback })
-const ProductDetail = loadable(() => import('./pages/product-detail'), { fallback })
+const CheckoutConfirmation = loadable(() => import('./pages/checkout/confirmation'), {fallback})
+const LoginRedirect = loadable(() => import('./pages/login-redirect'), {fallback})
+const ProductDetail = loadable(() => import('./pages/product-detail'), {fallback})
 const ProductList = loadable(() => import('./pages/product-list'), {
     fallback
 })
@@ -47,8 +47,8 @@ const Wishlist = loadable(() => import('./pages/account/wishlist'), {
     fallback
 })
 const PageNotFound = loadable(() => import('./pages/page-not-found'))
-const IDPCallback = loadable(() => import('./pages/idp-callback'), { fallback })
-const Auth = loadable(() => import('./pages/reach_five/Auth'), { fallback })
+const IDPCallback = loadable(() => import('./pages/idp-callback'), {fallback})
+const R5Sdk = loadable(() => import('./pages/reach_five/Sdk'), {fallback})
 
 export const routes = [
     {
@@ -95,8 +95,8 @@ export const routes = [
         exact: true
     },
     {
-        path: '/reach-five/auth',
-        component: Auth,
+        path: '/reach-five/login',
+        component: R5Sdk,
         exact: true
     },
     {
