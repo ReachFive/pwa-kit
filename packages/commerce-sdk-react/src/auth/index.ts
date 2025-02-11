@@ -1093,6 +1093,7 @@ class Auth {
         const code = parameters.code
         const usid = parameters.usid || this.get('usid')
         const redirectURI = parameters.redirectURI || this.redirectURI
+        const dntPref = this.getDnt({includeDefaults: true})
 
         const token = await helpers.loginIDPUser(
             this.client,
@@ -1103,6 +1104,7 @@ class Auth {
             {
                 redirectURI,
                 code,
+                dnt: dntPref,
                 ...(usid && {usid})
             }
         )
@@ -1149,13 +1151,15 @@ class Auth {
      */
     async getPasswordLessAccessToken(parameters: LoginPasswordlessParams) {
         const pwdlessLoginToken = parameters.pwdlessLoginToken
+        const dntPref = this.getDnt({includeDefaults: true})
         const token = await helpers.getPasswordLessAccessToken(
             this.client,
             {
                 clientSecret: this.clientSecret
             },
             {
-                pwdlessLoginToken
+                pwdlessLoginToken,
+                dnt: dntPref !== undefined ? String(dntPref) : undefined
             }
         )
         const isGuest = false
