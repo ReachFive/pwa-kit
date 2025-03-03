@@ -55,7 +55,6 @@ const Wishlist = loadable(() => import('./pages/account/wishlist'), {
     fallback
 })
 const PageNotFound = loadable(() => import('./pages/page-not-found'))
-const IDPCallback = loadable(() => import('./pages/idp-callback'), {fallback})
 const R5Sdk = loadable(() => import('./pages/reach_five/Sdk'), {fallback})
 
 export const routes = [

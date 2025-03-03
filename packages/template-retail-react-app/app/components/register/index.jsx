@@ -5,7 +5,6 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import useIdpAuth from '@salesforce/retail-react-app/app/hooks/use-idp-auth'
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
 import {FormattedMessage} from 'react-intl'
@@ -22,8 +21,6 @@ import RegistrationFields from '@salesforce/retail-react-app/app/components/form
 import Link from '@salesforce/retail-react-app/app/components/link'
 
 const RegisterForm = ({submitForm, clickSignIn = noop, form}) => {
-    const idpAuth = useIdpAuth()
-
     return (
         <Fragment>
             <Stack justify="center" align="center" spacing={8}>
@@ -42,42 +39,6 @@ const RegisterForm = ({submitForm, clickSignIn = noop, form}) => {
                         />
                     </Text>
                 </Stack>
-            </Stack>
-            <Stack justify="center" align="center" spacing={4} marginTop={8}>
-                <Button
-                    variant="outline"
-                    size="lg"
-                    leftIcon={<>R5</>}
-                    onClick={async () => {
-                        await idpAuth.loginRedirect('reach_five')
-                    }}
-                >
-                    <FormattedMessage
-                        defaultMessage="Sign up with Reach5"
-                        id="register_form.button.sign_up_with_reach5"
-                    />
-                </Button>
-                <Text fontSize="x-large" align="center">
-                    <FormattedMessage defaultMessage="or" id="register_form.message.or" />
-                </Text>
-            </Stack>
-            <Stack justify="center" align="center" spacing={4} marginTop={8}>
-                <Button
-                    variant="outline"
-                    size="lg"
-                    leftIcon={<>R5 - PWA</>}
-                    onClick={async () => {
-                        await idpAuth.loginRedirect('reach_five_slas')
-                    }}
-                >
-                    <FormattedMessage
-                        defaultMessage="Sign up with Reach5"
-                        id="register_form.button.sign_up_with_reach5"
-                    />
-                </Button>
-                <Text fontSize="x-large" align="center">
-                    <FormattedMessage defaultMessage="or" id="register_form.message.or" />
-                </Text>
             </Stack>
             <form
                 onSubmit={form.handleSubmit(submitForm)}
