@@ -4943,20 +4943,6 @@
       "value": "]"
     }
   ],
-  "login_form.button.continue_with_reach5": [
-    {
-      "type": 0,
-      "value": "["
-    },
-    {
-      "type": 0,
-      "value": "Ƈǿǿƞŧīƞŭŭḗḗ ẇīŧħ řḗḗȧȧƈħ5"
-    },
-    {
-      "type": 0,
-      "value": "]"
-    }
-  ],
   "login_form.button.apple": [
     {
       "type": 0,
@@ -4993,6 +4979,20 @@
     {
       "type": 0,
       "value": "Ƈǿǿƞŧīƞŭŭḗḗ Şḗḗƈŭŭřḗḗŀẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "login_form.button.continue_with_reach5": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿƞŧīƞŭŭḗḗ ẇīŧħ řḗḗȧȧƈħ5"
     },
     {
       "type": 0,

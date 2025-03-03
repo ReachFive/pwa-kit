@@ -2311,12 +2311,6 @@
       "value": "Create account"
     }
   ],
-  "login_form.button.continue_with_reach5": [
-    {
-      "type": 0,
-      "value": "Continue with reach5"
-    }
-  ],
   "login_form.button.apple": [
     {
       "type": 0,
@@ -2333,6 +2327,12 @@
     {
       "type": 0,
       "value": "Continue Securely"
+    }
+  ],
+  "login_form.button.continue_with_reach5": [
+    {
+      "type": 0,
+      "value": "Continue with reach5"
     }
   ],
   "login_form.button.google": [
